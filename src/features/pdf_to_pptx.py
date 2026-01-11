@@ -21,15 +21,29 @@ except ImportError:
 
 def find_libreoffice():
     """Find LibreOffice installation path."""
-    possible_paths = [
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    
+    # Check workspace portable versions
+    workspace_paths = [
+        os.path.join(project_root, "LibreOfficePortable", "App", "libreoffice", "program", "soffice.exe"),
+        # Handle the case where double folder creation might have happened
+        os.path.join(project_root, "LibreOfficePortableLibreOfficePortable", "App", "libreoffice", "program", "soffice.exe"),
+    ]
+
+    possible_paths = workspace_paths + [
+        r"C:\LibreOffice\program\soffice.exe",
+        r"C:\LibreOfficePortable\App\libreoffice\program\soffice.exe",
+        r"C:\PortableApps\LibreOfficePortable\App\libreoffice\program\soffice.exe",
         r"C:\Program Files\LibreOffice\program\soffice.exe",
         r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
         shutil.which("soffice"),
         shutil.which("libreoffice"),
     ]
+    
     for path in possible_paths:
         if path and os.path.exists(path):
             return path
+            
     return None
 
 
@@ -358,6 +372,15 @@ def convert_with_custom_engine(input_path, output_path):
 
 
 
+
+def log_debug(message):
+    try:
+        debug_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "debug_conversion.txt")
+        with open(debug_file, "a") as f:
+            f.write(f"{message}\n")
+    except:
+        pass
+
 def convert_pdf_to_pptx(input_path, output_path):
     """
     Convert PDF to PowerPoint (PPTX).
@@ -368,9 +391,46 @@ def convert_pdf_to_pptx(input_path, output_path):
     3. Try LibreOffice
     4. Fallback to Images
     """
+    log_debug(f"\n--- Starting conversion for {input_path} ---")
     try:
-        # 1. Try Custom Engine first (Robust, format preserving, no crashes)
+        aspose_error = None
+        
+        # 1. Try LibreOffice first (Best quality open source engine)
+        log_debug("Attempting LibreOffice conversion...")
+        soffice_path = find_libreoffice()
+        log_debug(f"LibreOffice path found: {soffice_path}")
+        
+        success, message = convert_with_libreoffice(input_path, output_path)
+        log_debug(f"LibreOffice result: {success}, {message}")
+        if success:
+            audit_logger.log_event("pdf_to_pptx", {
+                "input": input_path, 
+                "output": output_path,
+                "method": "libreoffice"
+            })
+            return True, message
+
+        # 2. Try Aspose second
+        if HAS_ASPOSE:
+            log_debug("Attempting Aspose conversion...")
+            success, message = convert_with_aspose(input_path, output_path)
+            log_debug(f"Aspose result: {success}, {message}")
+            if success:
+                audit_logger.log_event("pdf_to_pptx", {
+                    "input": input_path, 
+                    "output": output_path,
+                    "method": "aspose"
+                })
+                return True, message
+            else:
+                aspose_error = message
+        else:
+            log_debug("Aspose not available (import failed)")
+
+        # 3. Try Custom Engine third (Python-based fallback)
+        log_debug("Attempting Custom Engine conversion...")
         success, message = convert_with_custom_engine(input_path, output_path)
+        log_debug(f"Custom Engine result: {success}, {message}")
         if success:
             audit_logger.log_event("pdf_to_pptx", {
                 "input": input_path, 
@@ -378,48 +438,27 @@ def convert_pdf_to_pptx(input_path, output_path):
                 "method": "custom_engine"
             })
             return True, message
-
-        aspose_error = None
-        # Try Aspose second
-        # if HAS_ASPOSE:
-        #     success, message = convert_with_aspose(input_path, output_path)
-        #     if success:
-        #         audit_logger.log_event("pdf_to_pptx", {
-        #             "input": input_path, 
-        #             "output": output_path,
-        #             "method": "aspose"
-        #         })
-        #         return True, message
-        #     else:
-        #         aspose_error = message
         
-        # Try LibreOffice third
-        # success, message = convert_with_libreoffice(input_path, output_path)
-        # if success:
-        #     audit_logger.log_event("pdf_to_pptx", {
-        #         "input": input_path, 
-        #         "output": output_path,
-        #         "method": "libreoffice"
-        #     })
-        #     return True, message
+        # 4. Fall back to image-based conversion
+        log_debug("Attempting Image-based conversion...")
+        success, message = convert_with_images(input_path, output_path)
+        log_debug(f"Image-based result: {success}, {message}")
+        if success:
+            audit_logger.log_event("pdf_to_pptx", {
+                "input": input_path, 
+                "output": output_path,
+                "method": "image"
+            })
+            hint = ""
+            if not HAS_ASPOSE:
+                hint = " (pip install aspose.slides for editable text)"
+            return True, message + hint
         
-        # Fall back to image-based conversion
-        # success, message = convert_with_images(input_path, output_path)
-        # if success:
-        #     audit_logger.log_event("pdf_to_pptx", {
-        #         "input": input_path, 
-        #         "output": output_path,
-        #         "method": "image"
-        #     })
-        #     hint = ""
-        #     if not HAS_ASPOSE:
-        #         hint = " (pip install aspose.slides for editable text)"
-        #     return True, message + hint
-        
-        # if aspose_error:
-        #    return False, f"Aspose conversion failed: {aspose_error}. Fallback methods also failed."
+        if aspose_error:
+           return False, f"Aspose conversion failed: {aspose_error}. Fallback methods also failed."
             
-        return False, "Custom conversion engine failed."
+        return False, "Custom conversion engine failed and no fallbacks succeeded."
         
     except Exception as e:
+        log_debug(f"Exception during conversion: {str(e)}")
         return False, str(e)

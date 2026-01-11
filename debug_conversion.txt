@@ -1,0 +1,26 @@
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Attempting LibreOffice conversion...
+LibreOffice path found: None
+LibreOffice result: False, LibreOffice not found
+Aspose not available (import failed)
+Attempting Custom Engine conversion...
+Custom Engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Attempting LibreOffice conversion...
+LibreOffice path found: None
+LibreOffice result: False, LibreOffice not found
+Aspose not available (import failed)
+Attempting Custom Engine conversion...
+Custom Engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Attempting LibreOffice conversion...
+LibreOffice path found: C:\LibreOfficePortable\App\libreoffice\program\soffice.exe
+LibreOffice result: True, Converted with LibreOffice (editable text preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Attempting LibreOffice conversion...
+LibreOffice path found: C:\LibreOfficePortable\App\libreoffice\program\soffice.exe
+LibreOffice result: True, Converted with LibreOffice (editable text preserved)
