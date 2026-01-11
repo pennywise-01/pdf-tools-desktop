@@ -1,0 +1,34 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Install new dependencies",
+			"type": "shell",
+			"command": "pip",
+			"args": [
+				"install",
+				"pdf2docx",
+				"pdfplumber",
+				"pandas",
+				"openpyxl",
+				"python-pptx",
+				"cryptography"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Install comtypes",
+			"type": "shell",
+			"command": "pip",
+			"args": [
+				"install",
+				"comtypes"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

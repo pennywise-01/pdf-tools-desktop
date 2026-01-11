@@ -1,0 +1,193 @@
+/*
+ * Refined Modern Theme - Clean & Professional
+ * Palette:
+ * - Primary Background: #FAFBFC
+ * - Card Background: #FFFFFF
+ * - Accent: #2563EB (vibrant blue)
+ * - Text Primary: #1E293B
+ * - Text Secondary: #64748B
+ * - Border: #E2E8F0
+ */
+
+QWidget {
+    background-color: #FAFBFC;
+    color: #1E293B;
+    border: none;
+    font-family: "Segoe UI", "SF Pro Display", sans-serif;
+}
+
+QTabWidget::pane {
+    border-top: 1px solid #E2E8F0;
+}
+
+QTabBar::tab {
+    background: #FFFFFF;
+    color: #64748B;
+    padding: 12px 24px;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 600;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: #FAFBFC;
+    color: #1E293B;
+    border-bottom: 3px solid #2563EB;
+}
+
+QPushButton {
+    background-color: #2563EB;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    min-height: 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+QPushButton:hover {
+    background-color: #1D4ED8;
+}
+
+QPushButton:pressed {
+    background-color: #1E40AF;
+}
+
+QPushButton:disabled {
+    background-color: #E2E8F0;
+    color: #94A3B8;
+}
+
+QLineEdit, QTextEdit {
+    background-color: #FFFFFF;
+    color: #1E293B;
+    border: 2px solid #E2E8F0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+QLineEdit:focus, QTextEdit:focus {
+    border-color: #2563EB;
+}
+
+QListWidget {
+    background-color: #FFFFFF;
+    color: #1E293B;
+    border: 2px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+QListWidget::item {
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+QListWidget::item:selected {
+    background-color: #EFF6FF;
+    color: #2563EB;
+}
+
+QLabel {
+    color: #1E293B;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+QComboBox {
+    background-color: #FFFFFF;
+    color: #1E293B;
+    border: 2px solid #E2E8F0;
+    padding: 10px 12px;
+    padding-right: 36px; /* reserve space for the drop-down arrow */
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+QComboBox:hover {
+    border-color: #CBD5E1;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 32px;
+    border-left: 1px solid #E2E8F0;
+}
+
+QComboBox::down-arrow {
+    /* Force an always-visible arrow (default can be invisible under custom QSS) */
+    image: url({DROPDOWN_ARROW});
+    width: 12px;
+    height: 12px;
+}
+
+QProgressBar {
+    border: none;
+    border-radius: 6px;
+    text-align: center;
+    background-color: #E2E8F0;
+    color: #1E293B;
+    height: 8px;
+}
+
+QProgressBar::chunk {
+    background-color: #2563EB;
+    border-radius: 6px;
+}
+
+QToolBar {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E2E8F0;
+    padding: 8px 16px;
+    spacing: 12px;
+}
+
+QScrollBar:vertical {
+    background-color: #F1F5F9;
+    width: 10px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #CBD5E1;
+    border-radius: 5px;
+    min-height: 30px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #94A3B8;
+}
+
+/* Feature Button Card Styling */
+QPushButton#featureButton {
+    background-color: #FFFFFF;
+    border: 2px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 10px 14px;
+    text-align: left;
+    color: #1E293B;
+}
+
+QPushButton#featureButton:hover {
+    background-color: #F8FAFC;
+    border-color: #2563EB;
+    border-width: 2px;
+    color: #1E293B;
+}
+
+QPushButton#featureButton:pressed {
+    background-color: #EFF6FF;
+    color: #1E293B;
+}
+
+QPushButton#featureButton:focus {
+    color: #1E293B;
+}
+QPushButton#featureButton QLabel#featureNameLabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFFFFF;
+}

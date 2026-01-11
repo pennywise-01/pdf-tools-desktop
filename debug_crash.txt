@@ -1,0 +1,12 @@
+Starting reproduction...
+convert_pdf_to_pptx called
+Attempting Aspose conversion
+Entering convert_with_aspose: test_crash.pdf -> test_crash.pptx
+Creating Presentation object
+Removing default slide
+Adding from PDF
+Saving to output
+Aspose conversion successful
+Aspose result: True, Converted with Aspose (editable text preserved)
+Logging audit event
+Audit logged
