@@ -1,10 +1,11 @@
 import sys
 import os
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout, QHBoxLayout
+    QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout, 
+    QHBoxLayout, QFrame, QScrollArea, QSizePolicy, QSpacerItem
 )
-from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import Qt, QSize, QPropertyAnimation, QEasingCurve, pyqtProperty
+from PyQt6.QtGui import QFont, QColor
 
 # Import feature tabs
 from tabs.merge_tab import MergeTab
@@ -30,6 +31,104 @@ from tabs.pdf_to_excel_tab import PDFToExcelTab
 from tabs.office_to_pdf_tab import OfficeToPDFTab
 from tabs.pdf_to_pptx_tab import PDFToPPTXTab
 
+# Color palette constants - Deep Ocean Theme
+COLORS = {
+    'bg': '#0a0f14',
+    'surface': '#141c24',
+    'surface_elevated': '#1a242e',
+    'surface_hover': '#202d3a',
+    'border': '#2a3744',
+    'border_hover': '#3d4f5f',
+    'text': '#f0f4f8',
+    'text_secondary': '#94a3b8',
+    'text_dim': '#64748b',
+    'accent': '#38bdf8',
+    'accent_hover': '#7dd3fc',
+    'accent_muted': 'rgba(56, 189, 248, 0.15)',
+    # Category colors
+    'organize': '#3b82f6',
+    'optimize': '#f59e0b',
+    'convert_to': '#10b981',
+    'convert_from': '#8b5cf6',
+    'edit': '#ec4899',
+    'security': '#ef4444',
+}
+
+CATEGORIES = [
+    {
+        "title": "Organize",
+        "icon": "📁",
+        "color": COLORS['organize'],
+        "description": "Merge, split, and manage PDF pages",
+        "items": [
+            ("Merge PDF", MergeTab, "Combine multiple files into one"),
+            ("Split PDF", SplitTab, "Divide PDF into separate files"),
+            ("Remove Pages", RemovePagesTab, "Delete unwanted pages"),
+            ("Extract Pages", ExtractPagesTab, "Save specific pages"),
+        ]
+    },
+    {
+        "title": "Optimize",
+        "icon": "⚡",
+        "color": COLORS['optimize'],
+        "description": "Compress, repair, and enhance PDFs",
+        "items": [
+            ("Compress PDF", CompressTab, "Reduce file size"),
+            ("OCR PDF", OcrTab, "Extract text from scanned documents"),
+            ("Repair PDF", RepairTab, "Fix corrupted PDF files"),
+        ]
+    },
+    {
+        "title": "Convert to PDF",
+        "icon": "📥",
+        "color": COLORS['convert_to'],
+        "description": "Create PDFs from various formats",
+        "items": [
+            ("Images to PDF", ImagesToPdfTab, "Convert JPG, PNG to PDF"),
+            ("Word to PDF", OfficeToPDFTab, "Convert DOCX documents"),
+            ("PowerPoint to PDF", OfficeToPDFTab, "Convert PPTX presentations"),
+            ("Excel to PDF", OfficeToPDFTab, "Convert XLSX spreadsheets"),
+            ("HTML to PDF", HtmlToPdfTab, "Convert web pages"),
+        ]
+    },
+    {
+        "title": "Convert from PDF",
+        "icon": "📤",
+        "color": COLORS['convert_from'],
+        "description": "Export PDFs to other formats",
+        "items": [
+            ("PDF to Images", PdfToImagesTab, "Export as JPG or PNG"),
+            ("PDF to Word", PDFToWordTab, "Convert to editable DOCX"),
+            ("PDF to PowerPoint", PDFToPPTXTab, "Convert to PPTX slides"),
+            ("PDF to Excel", PDFToExcelTab, "Extract to spreadsheet"),
+            ("Extract Text", ExtractTextTab, "Export as plain text"),
+        ]
+    },
+    {
+        "title": "Edit",
+        "icon": "✏️",
+        "color": COLORS['edit'],
+        "description": "Modify and annotate PDFs",
+        "items": [
+            ("Rotate Pages", RotatePagesTab, "Change page orientation"),
+            ("Add Watermark", WatermarkTab, "Add text or image overlay"),
+        ]
+    },
+    {
+        "title": "Security",
+        "icon": "🔒",
+        "color": COLORS['security'],
+        "description": "Protect and secure your documents",
+        "items": [
+            ("Encrypt PDF", EncryptTab, "Add password protection"),
+            ("Redact PDF", RedactTab, "Permanently hide sensitive content"),
+            ("Scrub Metadata", ScrubMetadataTab, "Remove hidden information"),
+            ("Secure Shred", ShredTab, "Permanently delete files"),
+            ("Sign PDF", SignPdfTab, "Add digital signature"),
+        ]
+    },
+]
+
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -37,133 +136,297 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
+
+class CollapsibleCategory(QWidget):
+    """A collapsible category widget with expandable feature list"""
+    
+    def __init__(self, category_data, main_window, parent=None):
+        super().__init__(parent)
+        self.category = category_data
+        self.main_window = main_window
+        self.is_expanded = False
+        self.setup_ui()
+    
+    def setup_ui(self):
+        self.setStyleSheet("background: transparent;")
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+        
+        # Category header button
+        self.header_btn = QPushButton()
+        self.header_btn.setObjectName("categoryHeader")
+        self.header_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.header_btn.setFixedHeight(80)
+        self.header_btn.clicked.connect(self.toggle_expand)
+        
+        header_layout = QHBoxLayout(self.header_btn)
+        header_layout.setContentsMargins(20, 16, 20, 16)
+        header_layout.setSpacing(16)
+        
+        # Color indicator
+        indicator = QFrame()
+        indicator.setFixedSize(4, 48)
+        indicator.setStyleSheet(f"background-color: {self.category['color']}; border-radius: 2px;")
+        header_layout.addWidget(indicator)
+        
+        # Icon
+        icon_label = QLabel(self.category["icon"])
+        icon_label.setFont(QFont("Plus Jakarta Sans", 20))
+        icon_label.setFixedWidth(36)
+        icon_label.setStyleSheet("background: transparent;")
+        header_layout.addWidget(icon_label)
+        
+        # Title and description
+        text_container = QWidget()
+        text_container.setStyleSheet("background: transparent;")
+        text_layout = QVBoxLayout(text_container)
+        text_layout.setContentsMargins(0, 0, 0, 0)
+        text_layout.setSpacing(4)
+        
+        title = QLabel(self.category["title"])
+        title.setFont(QFont("Plus Jakarta Sans", 16, QFont.Weight.DemiBold))
+        title.setStyleSheet(f"color: {COLORS['text']}; background: transparent;")
+        
+        desc = QLabel(self.category["description"])
+        desc.setFont(QFont("Plus Jakarta Sans", 12))
+        desc.setStyleSheet(f"color: {COLORS['text_secondary']}; background: transparent;")
+        
+        text_layout.addWidget(title)
+        text_layout.addWidget(desc)
+        header_layout.addWidget(text_container, 1)
+        
+        # Tool count badge
+        count_badge = QLabel(f"{len(self.category['items'])}")
+        count_badge.setFont(QFont("Plus Jakarta Sans", 11, QFont.Weight.Medium))
+        count_badge.setFixedSize(28, 28)
+        count_badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        count_badge.setStyleSheet(f"""
+            color: {self.category['color']}; 
+            background-color: {self.category['color']}20; 
+            border-radius: 14px;
+        """)
+        header_layout.addWidget(count_badge)
+        
+        # Expand arrow
+        self.arrow_label = QLabel("›")
+        self.arrow_label.setFont(QFont("Plus Jakarta Sans", 20, QFont.Weight.Normal))
+        self.arrow_label.setFixedWidth(24)
+        self.arrow_label.setStyleSheet(f"color: {COLORS['text_dim']}; background: transparent;")
+        header_layout.addWidget(self.arrow_label)
+        
+        # Header styling
+        self.header_btn.setStyleSheet(f"""
+            QPushButton#categoryHeader {{
+                background-color: {COLORS['surface']};
+                border: 1px solid {COLORS['border']};
+                border-radius: 12px;
+                text-align: left;
+            }}
+            QPushButton#categoryHeader:hover {{
+                background-color: {COLORS['surface_elevated']};
+                border-color: {self.category['color']}60;
+            }}
+        """)
+        
+        layout.addWidget(self.header_btn)
+        
+        # Expandable content container
+        self.content_widget = QWidget()
+        self.content_widget.setStyleSheet("background: transparent;")
+        self.content_widget.setVisible(False)
+        
+        content_layout = QVBoxLayout(self.content_widget)
+        content_layout.setContentsMargins(0, 8, 0, 0)
+        content_layout.setSpacing(8)
+        
+        # Feature buttons grid
+        grid = QGridLayout()
+        grid.setSpacing(10)
+        grid.setContentsMargins(0, 0, 0, 0)
+        
+        for idx, item in enumerate(self.category["items"]):
+            row = idx // 3
+            col = idx % 3
+            btn = self.create_feature_button(item)
+            grid.addWidget(btn, row, col)
+        
+        # Fill empty columns
+        items_in_last_row = len(self.category["items"]) % 3
+        if items_in_last_row > 0:
+            last_row = len(self.category["items"]) // 3
+            for col in range(items_in_last_row, 3):
+                spacer = QWidget()
+                spacer.setStyleSheet("background: transparent;")
+                grid.addWidget(spacer, last_row, col)
+        
+        content_layout.addLayout(grid)
+        layout.addWidget(self.content_widget)
+    
+    def toggle_expand(self):
+        self.is_expanded = not self.is_expanded
+        self.content_widget.setVisible(self.is_expanded)
+        
+        # Update arrow direction
+        self.arrow_label.setText("˅" if self.is_expanded else "›")
+        
+        # Update header style when expanded
+        if self.is_expanded:
+            self.header_btn.setStyleSheet(f"""
+                QPushButton#categoryHeader {{
+                    background-color: {self.category['color']}15;
+                    border: 1px solid {self.category['color']}60;
+                    border-radius: 12px;
+                    text-align: left;
+                }}
+                QPushButton#categoryHeader:hover {{
+                    background-color: {self.category['color']}20;
+                    border-color: {self.category['color']};
+                }}
+            """)
+        else:
+            self.header_btn.setStyleSheet(f"""
+                QPushButton#categoryHeader {{
+                    background-color: {COLORS['surface']};
+                    border: 1px solid {COLORS['border']};
+                    border-radius: 12px;
+                    text-align: left;
+                }}
+                QPushButton#categoryHeader:hover {{
+                    background-color: {COLORS['surface_elevated']};
+                    border-color: {self.category['color']}60;
+                }}
+            """)
+    
+    def create_feature_button(self, item_data):
+        """Create a feature button tile"""
+        name, tab_class, description = item_data
+        
+        color = self.category['color']
+        
+        btn = QPushButton()
+        btn.setObjectName("featureTile")
+        btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        btn.setFixedHeight(76)
+        btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        btn.setToolTip(description)
+        
+        # Use a QWidget container inside button for proper label display
+        container = QWidget(btn)
+        container.setStyleSheet("background: transparent;")
+        container.setGeometry(0, 0, 300, 76)
+        
+        btn_layout = QVBoxLayout(container)
+        btn_layout.setContentsMargins(16, 14, 16, 14)
+        btn_layout.setSpacing(4)
+        btn_layout.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+        
+        name_label = QLabel(name, container)
+        name_label.setFont(QFont("Plus Jakarta Sans", 13, QFont.Weight.Medium))
+        name_label.setStyleSheet(f"color: {COLORS['text']}; background: transparent;")
+        name_label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        
+        desc_label = QLabel(description, container)
+        desc_label.setFont(QFont("Plus Jakarta Sans", 11))
+        desc_label.setStyleSheet(f"color: {COLORS['text_secondary']}; background: transparent;")
+        desc_label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        
+        btn_layout.addWidget(name_label)
+        btn_layout.addWidget(desc_label)
+        
+        btn.setStyleSheet(f"""
+            QPushButton#featureTile {{
+                background-color: {COLORS['surface']};
+                border: 1px solid {COLORS['border']};
+                border-radius: 10px;
+                text-align: left;
+            }}
+            QPushButton#featureTile:hover {{
+                background-color: {color}15;
+                border-color: {color}80;
+            }}
+            QPushButton#featureTile:pressed {{
+                background-color: {color}25;
+                border-color: {color};
+            }}
+        """)
+        
+        # Make container resize with button
+        def resize_container(event):
+            container.setGeometry(0, 0, btn.width(), btn.height())
+        btn.resizeEvent = resize_container
+        
+        if tab_class:
+            btn.clicked.connect(lambda: self.main_window.switch_to_feature_by_widget(tab_class))
+        
+        return btn
+
+
 class HomePage(QWidget):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
+        self.setup_ui()
+    
+    def setup_ui(self):
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setFrameShape(QFrame.Shape.NoFrame)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        scroll_area.setStyleSheet("background-color: transparent;")
         
-        # Main layout
-        main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(40, 40, 40, 40)
-        main_layout.setSpacing(20)
+        container = QWidget()
+        container.setStyleSheet(f"background-color: {COLORS['bg']};")
+        main_layout = QVBoxLayout(container)
+        main_layout.setContentsMargins(48, 40, 48, 40)
+        main_layout.setSpacing(24)
         
-        # Grid layout for columns
-        grid_layout = QGridLayout()
-        grid_layout.setSpacing(20)
-        # Make columns stretch equally
-        for i in range(6):
-            grid_layout.setColumnStretch(i, 1)
-            
-        main_layout.addLayout(grid_layout)
-
-        # Define columns and their items
-        # Structure: (Header, [ (ButtonText, TabClass, IconPath) ])
-        columns = [
-            ("Organized PDF", [
-                ("Merge PDF", MergeTab, "icon/merge-removebg-preview.png"),
-                ("Split PDF", SplitTab, "icon/split-removebg-preview.png"),
-                ("Remove Pages", RemovePagesTab, "icon/remove-removebg-preview.png"),
-                ("Extract Pages", ExtractPagesTab, "icon/extract-removebg-preview.png"),
-            ]),
-            ("Optimized PDF", [
-                ("Compress PDF", CompressTab, "icon/pdf-app-icon.png"),
-                ("OCR PDF", OcrTab, "icon/pdf-app-icon.png"),
-                ("Repair PDF", RepairTab, "icon/merge-removebg-preview.png"),
-            ]),
-            ("Convert to PDF", [
-                ("JPG to PDF", ImagesToPdfTab, "icon/png-removebg-preview.png"),
-                ("Word to PDF", OfficeToPDFTab, "icon/wordtopdf.png"), 
-                ("PPTX to PDF", OfficeToPDFTab, "icon/ppttopdf.png"),
-                ("Excel to PDF", OfficeToPDFTab, "icon/pdf-app-icon.png"),
-                ("HTML to PDF", HtmlToPdfTab, "icon/html-removebg-preview.png"),
-            ]),
-             ("Convert from PDF", [
-                ("PDF to JPG", PdfToImagesTab, "icon/png.png"),
-                ("PDF to Word", PDFToWordTab, "icon/wordtopdf.png"), 
-                ("PDF to PPTX", PDFToPPTXTab, "icon/ppttopdf.png"),
-                ("PDF to Excel", PDFToExcelTab, "icon/pdf-app-icon.png"),
-                ("Extract Text", ExtractTextTab, "icon/pdf-app-icon.png"),
-            ]),
-             ("Edit PDF", [
-                ("Rotate PDF", RotatePagesTab, "icon/rotate-removebg-preview.png"),
-                ("Add Watermark", WatermarkTab, "icon/pdf-app-icon.png"),
-            ]),
-            ("PDF Security", [
-                ("Encrypt PDF", EncryptTab, "icon/encrypt-removebg-preview.png"),
-                ("Redact PDF", RedactTab, "icon/pdf-app-icon.png"),
-                ("Scrub PDF", ScrubMetadataTab, "icon/metadata-removebg-preview.png"),
-                ("Secure Shred", ShredTab, "icon/pdf-app-icon.png"),
-                ("Sign PDF", SignPdfTab, "icon/encrypt-removebg-preview.png"),
-            ]),
-        ]
-
-        # Create columns
-        for col_idx, (header_text, items) in enumerate(columns):
-            # Header
-            header = QLabel(header_text)
-            header.setStyleSheet("""
-                font-size: 14px; 
-                font-weight: bold; 
-                color: #333333; 
-                padding: 10px; 
-                border: 1px solid #333;
-                background-color: white;
-            """)
-            header.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            header.setFixedHeight(45)
-            grid_layout.addWidget(header, 0, col_idx)
-            
-            # Items
-            for row_idx, (name, tab, icon_path) in enumerate(items):
-                btn = self.create_button(name, tab, icon_path)
-                grid_layout.addWidget(btn, row_idx + 1, col_idx)
-            
-            # Add stretch at the end of each column? No, grid handles it.
-            # But if columns have different lengths, the grid naturally handles alignment.
-            # If we want them top-aligned, we should align items.
-            grid_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        # Header
+        header_widget = self.create_header()
+        main_layout.addWidget(header_widget)
+        
+        # Categories
+        for category in CATEGORIES:
+            cat_widget = CollapsibleCategory(category, self.main_window)
+            main_layout.addWidget(cat_widget)
         
         main_layout.addStretch()
-
-    def create_button(self, name, tab_class, icon_path):
-        btn = QPushButton(name)
-        btn.setFixedHeight(45)
         
-        # Set Icon
-        if icon_path:
-             full_path = resource_path(icon_path)
-             if os.path.exists(full_path):
-                 btn.setIcon(QIcon(full_path))
-                 btn.setIconSize(QSize(20, 20))
+        scroll_area.setWidget(container)
         
-        # Style
-        # Dark text color #222222
-        btn.setStyleSheet("""
-            QPushButton {
-                text-align: left;
-                padding-left: 15px;
-                color: #222222;
-                background-color: #f5f5f5;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                font-size: 12px;
-                font-weight: bold;
-            }
-            QPushButton:hover {
-                background-color: #e5e5e5;
-                border-color: #bbb;
-            }
-            QPushButton:disabled {
-                color: #888;
-                background-color: #f9f9f9;
-            }
-        """)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(scroll_area)
+    
+    def create_header(self):
+        """Create compact header"""
+        header_widget = QWidget()
+        header_widget.setStyleSheet("background: transparent;")
+        header_layout = QVBoxLayout(header_widget)
+        header_layout.setSpacing(8)
+        header_layout.setContentsMargins(0, 0, 0, 16)
         
-        if tab_class:
-            btn.clicked.connect(lambda: self.main_window.switch_to_feature_by_widget(tab_class))
-            btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        else:
-            btn.setEnabled(False)
-            btn.setToolTip("Coming Soon")
-            
-        return btn
+        # Title row
+        title_row = QHBoxLayout()
+        title_row.setSpacing(0)
+        
+        title_main = QLabel("PDF Tools")
+        title_main.setFont(QFont("Plus Jakarta Sans", 28, QFont.Weight.Bold))
+        title_main.setStyleSheet(f"color: {COLORS['text']}; background: transparent;")
+        
+        title_accent = QLabel(" Desktop")
+        title_accent.setFont(QFont("Plus Jakarta Sans", 28, QFont.Weight.Bold))
+        title_accent.setStyleSheet(f"color: {COLORS['accent']}; background: transparent;")
+        
+        title_row.addWidget(title_main)
+        title_row.addWidget(title_accent)
+        title_row.addStretch()
+        
+        subtitle = QLabel("Click a category below to see available tools")
+        subtitle.setFont(QFont("Plus Jakarta Sans", 13))
+        subtitle.setStyleSheet(f"color: {COLORS['text_secondary']}; background: transparent;")
+        
+        header_layout.addLayout(title_row)
+        header_layout.addWidget(subtitle)
+        
+        return header_widget

@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.ocr_pdf import ocr_pdf, setup_tesseract
 from utils.tesseract_installer import download_installer, run_installer
 from network_security import temporarily_allow_network
@@ -73,38 +73,28 @@ class OcrTab(FeatureTab):
         self.selected_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "OCR (Text Recognition)",
+            "Make scanned documents searchable by adding a text layer."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("OCR (Text Recognition)")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
-        
-        description = QLabel("Make scanned documents searchable by adding a text layer.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
+        # File selection
+        self.file_container, self.file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        self.file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.file_label)
-
-        select_button = QPushButton("Select Scanned PDF")
-        select_button.clicked.connect(self.select_file)
+        select_button = self.create_secondary_button("Select Scanned PDF", self.select_file)
         self.controls_layout.addWidget(select_button)
 
-        # Language selection
-        lang_layout = QVBoxLayout()
-        lang_layout.addWidget(QLabel("Language:"))
-        self.lang_combo = QComboBox()
-        self.lang_combo.addItems(["English (eng)", "Spanish (spa)", "French (fra)", "German (deu)"])
+        # Language selection section
+        lang_section, lang_layout = self.create_section("Language")
+        self.lang_combo = self.create_dropdown(["English (eng)", "Spanish (spa)", "French (fra)", "German (deu)"])
         lang_layout.addWidget(self.lang_combo)
-        self.controls_layout.addLayout(lang_layout)
+        self.controls_layout.addWidget(lang_section)
 
-        self.ocr_button = QPushButton("Start OCR")
-        self.ocr_button.setObjectName("action_button")
-        self.ocr_button.clicked.connect(self.run_ocr)
+        # Action button
+        self.ocr_button = self.create_primary_button("Start OCR", self.run_ocr)
         self.controls_layout.addWidget(self.ocr_button)
         
         self.controls_layout.addStretch()
@@ -113,7 +103,8 @@ class OcrTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF", "", "PDF Files (*.pdf)")
         if file:
             self.selected_file = file
-            self.file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def run_ocr(self):

@@ -5,8 +5,9 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.split_pdf import split_pdf
+
 
 def to_range_string(numbers):
     if not numbers:
@@ -29,6 +30,7 @@ def to_range_string(numbers):
         ranges.append(f"{start}-{end}")
     return ",".join(ranges)
 
+
 class SplitWorker(QThread):
     finished = pyqtSignal(str)
     error = pyqtSignal(str)
@@ -46,39 +48,39 @@ class SplitWorker(QThread):
         except Exception as e:
             self.error.emit(str(e))
 
+
 class SplitTab(FeatureTab):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.selected_split_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "Split PDF",
+            "Extract specific pages into a new PDF document."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Split PDF")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
-
-        description = QLabel("Select a PDF file and choose the pages you want to extract into a new file.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.split_file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.split_file_label)
+        # File selection
+        self.file_container, self.file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
         
-        select_button = QPushButton("Select PDF")
-        select_button.clicked.connect(self.select_split_file)
+        select_button = self.create_secondary_button("Select PDF", self.select_split_file)
         self.controls_layout.addWidget(select_button)
 
-        pages_label = QLabel("Select pages to split from the preview.")
-        self.controls_layout.addWidget(pages_label)
+        # Info section
+        info_label = self.create_info_label(
+            "Click on page thumbnails in the preview to select the pages you want to extract."
+        )
+        self.controls_layout.addWidget(info_label)
 
-        self.split_button = QPushButton("Split PDF")
-        self.split_button.setObjectName("split_button")
-        self.split_button.clicked.connect(self.split_file)
+        # Selected pages indicator
+        self.pages_label = self.create_label("No pages selected", secondary=True)
+        self.controls_layout.addWidget(self.pages_label)
+
+        # Action button
+        self.split_button = self.create_primary_button("Split PDF", self.split_file)
         self.controls_layout.addWidget(self.split_button)
         
         self.controls_layout.addStretch()
@@ -87,7 +89,8 @@ class SplitTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF to Split", "", "PDF Files (*.pdf)")
         if file:
             self.selected_split_file = file
-            self.split_file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def split_file(self):
@@ -132,5 +135,6 @@ class SplitTab(FeatureTab):
             file = files[0]
             if file.lower().endswith('.pdf'):
                 self.selected_split_file = file
-                self.split_file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.file_label.setText(filename)
                 self.preview.load_pdf(file)

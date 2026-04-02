@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.shred_file import shred_file
 
 class ShredWorker(QThread):
@@ -29,36 +29,26 @@ class ShredTab(FeatureTab):
         self.selected_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
-
-        title = QLabel("Secure Shred")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setStyleSheet("color: red;")
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
-        
-        description = QLabel(
-            "Safely and permanently destroy files using DoD 5220.22-M standards. "
-            "Files shredded here CANNOT be recovered."
+        # Header with warning styling
+        header = self.create_header(
+            "Secure Shred",
+            "Safely and permanently destroy files using DoD 5220.22-M standards. Files shredded here CANNOT be recovered."
         )
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
+        self.controls_layout.addWidget(header)
 
-        self.file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.file_label)
+        # File selection
+        self.file_container, self.file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        select_button = QPushButton("Select File to Destroy")
-        select_button.setStyleSheet("background-color: #555555; color: white;")
-        select_button.clicked.connect(self.select_file)
+        select_button = self.create_secondary_button("Select File to Destroy", self.select_file)
         self.controls_layout.addWidget(select_button)
 
-        self.shred_button = QPushButton("SHRED FILE FOREVER")
-        self.shred_button.setObjectName("shred_button")
-        self.shred_button.setStyleSheet("background-color: darkred; color: white; font-weight: bold; padding: 10px;")
-        self.shred_button.clicked.connect(self.shred_file)
+        # Warning info
+        warning_label = self.create_info_label("⚠️ This action is permanent and cannot be undone.")
+        self.controls_layout.addWidget(warning_label)
+
+        # Action button - danger styling
+        self.shred_button = self.create_danger_button("SHRED FILE FOREVER", self.shred_file)
         self.controls_layout.addWidget(self.shred_button)
         
         self.controls_layout.addStretch()
@@ -68,7 +58,8 @@ class ShredTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select Any File", "", "All Files (*.*);;PDF Files (*.pdf)")
         if file:
             self.selected_file = file
-            self.file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.file_label.setText(filename)
             if file.lower().endswith('.pdf'):
                 self.preview.load_pdf(file)
             else:
@@ -118,7 +109,8 @@ class ShredTab(FeatureTab):
         if files:
             file = files[0]
             self.selected_file = file
-            self.file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.file_label.setText(filename)
             if file.lower().endswith('.pdf'):
                 self.preview.load_pdf(file)
             else:

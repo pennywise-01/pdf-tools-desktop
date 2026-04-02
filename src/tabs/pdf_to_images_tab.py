@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.pdf_to_images import convert_pdf_to_images
 
 class PdfToImagesWorker(QThread):
@@ -32,54 +32,46 @@ class PdfToImagesTab(FeatureTab):
         self.selected_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "PDF to Images",
+            "Convert PDF pages into high-resolution images."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("PDF to Images")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
+        # File selection
+        self.file_container, self.file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        description = QLabel("Convert PDF pages into high-resolution images.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.file_label)
-
-        select_button = QPushButton("Select PDF")
-        select_button.clicked.connect(self.select_file)
+        select_button = self.create_secondary_button("Select PDF", self.select_file)
         self.controls_layout.addWidget(select_button)
 
-        # Options
-        options_layout = QHBoxLayout()
+        # Options section
+        options_section, options_layout = self.create_section("Output Options")
         
-        # Format
-        format_layout = QVBoxLayout()
-        format_label = QLabel("Format:")
-        self.format_combo = QComboBox()
-        self.format_combo.addItems(["png", "jpg"])
+        # Format row
+        format_layout = QHBoxLayout()
+        format_label = self.create_label("Format:")
         format_layout.addWidget(format_label)
+        self.format_combo = self.create_dropdown(["png", "jpg"])
         format_layout.addWidget(self.format_combo)
+        format_layout.addStretch()
         options_layout.addLayout(format_layout)
         
-        # DPI
-        dpi_layout = QVBoxLayout()
-        dpi_label = QLabel("DPI:")
-        self.dpi_combo = QComboBox()
-        self.dpi_combo.addItems(["72", "150", "300", "600"])
-        self.dpi_combo.setCurrentText("300")
+        # DPI row
+        dpi_layout = QHBoxLayout()
+        dpi_label = self.create_label("DPI:")
         dpi_layout.addWidget(dpi_label)
+        self.dpi_combo = self.create_dropdown(["72", "150", "300", "600"])
+        self.dpi_combo.setCurrentText("300")
         dpi_layout.addWidget(self.dpi_combo)
+        dpi_layout.addStretch()
         options_layout.addLayout(dpi_layout)
         
-        self.controls_layout.addLayout(options_layout)
+        self.controls_layout.addWidget(options_section)
 
-        self.convert_button = QPushButton("Convert to Images")
-        self.convert_button.setObjectName("convert_button")
-        self.convert_button.clicked.connect(self.convert_file)
+        # Action button
+        self.convert_button = self.create_primary_button("Convert to Images", self.convert_file)
         self.controls_layout.addWidget(self.convert_button)
         
         self.controls_layout.addStretch()
@@ -88,7 +80,8 @@ class PdfToImagesTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF", "", "PDF Files (*.pdf)")
         if file:
             self.selected_file = file
-            self.file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def convert_file(self):
@@ -126,5 +119,6 @@ class PdfToImagesTab(FeatureTab):
             file = files[0]
             if file.lower().endswith('.pdf'):
                 self.selected_file = file
-                self.file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.file_label.setText(filename)
                 self.preview.load_pdf(file)

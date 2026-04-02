@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.html_to_pdf import convert_html_to_pdf, is_wkhtmltopdf_installed, install_wkhtmltopdf_help
 
 class HtmlToPdfWorker(QThread):
@@ -29,35 +29,25 @@ class HtmlToPdfTab(FeatureTab):
         super().__init__(parent)
         
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "HTML to PDF",
+            "Enter a URL or select an HTML file to convert to a PDF."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("HTML to PDF")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
-
-        description = QLabel("Enter a URL or select an HTML file to convert to a PDF.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.url_input = QLineEdit()
-        self.url_input.setPlaceholderText("Enter URL here")
+        # URL input
+        self.url_input = self.create_input("Enter URL here")
         self.controls_layout.addWidget(self.url_input)
 
-        buttons_layout = QVBoxLayout()
-        select_button = QPushButton("Select HTML File")
-        select_button.clicked.connect(self.select_html_file)
-        buttons_layout.addWidget(select_button)
+        # Buttons
+        select_button = self.create_secondary_button("Select HTML File", self.select_html_file)
+        self.controls_layout.addWidget(select_button)
 
-        self.convert_button = QPushButton("Convert to PDF")
-        self.convert_button.setObjectName("convert_button")
-        self.convert_button.clicked.connect(self.convert)
-        buttons_layout.addWidget(self.convert_button)
-
-        self.controls_layout.addLayout(buttons_layout)
+        self.convert_button = self.create_primary_button("Convert to PDF", self.convert)
+        self.controls_layout.addWidget(self.convert_button)
+        
+        self.controls_layout.addStretch()
 
     def select_html_file(self):
         file, _ = QFileDialog.getOpenFileName(self, "Select HTML File", "", "HTML Files (*.html *.htm)")

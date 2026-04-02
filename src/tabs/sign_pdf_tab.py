@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.sign_pdf import sign_pdf
 
 class SignPdfWorker(QThread):
@@ -34,55 +34,46 @@ class SignPdfTab(FeatureTab):
         self.pfx_path = None
         
     def setup_controls(self):
-        # Title
-        title = QLabel("Sign PDF")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
-
-        description = QLabel("Digitally sign a PDF using a PFX/P12 certificate.")
-        description.setWordWrap(True)
-        self.controls_layout.addWidget(description)
+        # Header
+        header = self.create_header(
+            "Sign PDF",
+            "Digitally sign a PDF using a PFX/P12 certificate."
+        )
+        self.controls_layout.addWidget(header)
         
-        layout = QVBoxLayout()
+        # Step 1: PDF selection
+        step1_label = self.create_label("1. Select PDF to Sign:")
+        self.controls_layout.addWidget(step1_label)
         
-        # Input PDF
-        self.input_label = QLabel("No PDF selected")
-        self.select_pdf_btn = QPushButton("Select PDF")
-        self.select_pdf_btn.clicked.connect(self.select_pdf)
+        self.pdf_container, self.input_label = self.create_file_label("No PDF selected")
+        self.controls_layout.addWidget(self.pdf_container)
         
-        # PFX File
-        self.pfx_label = QLabel("No Certificate selected")
-        self.select_pfx_btn = QPushButton("Select PFX/P12")
-        self.select_pfx_btn.clicked.connect(self.select_pfx)
+        self.select_pdf_btn = self.create_secondary_button("Select PDF", self.select_pdf)
+        self.controls_layout.addWidget(self.select_pdf_btn)
         
-        # Password
-        self.password_input = QLineEdit()
-        self.password_input.setPlaceholderText("Certificate Password")
-        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+        # Step 2: Certificate selection
+        step2_label = self.create_label("2. Select Certificate:")
+        self.controls_layout.addWidget(step2_label)
+        
+        self.pfx_container, self.pfx_label = self.create_file_label("No Certificate selected")
+        self.controls_layout.addWidget(self.pfx_container)
+        
+        self.select_pfx_btn = self.create_secondary_button("Select PFX/P12", self.select_pfx)
+        self.controls_layout.addWidget(self.select_pfx_btn)
+        
+        # Step 3: Password
+        step3_label = self.create_label("3. Enter Password:")
+        self.controls_layout.addWidget(step3_label)
+        
+        self.password_input = self.create_password_input("Certificate Password")
+        self.controls_layout.addWidget(self.password_input)
         
         # Sign Button
-        self.sign_btn = QPushButton("Sign PDF")
-        self.sign_btn.clicked.connect(self.sign_pdf)
+        self.sign_btn = self.create_primary_button("Sign PDF", self.sign_pdf)
         self.sign_btn.setEnabled(False)
+        self.controls_layout.addWidget(self.sign_btn)
         
-        layout.addWidget(QLabel("1. Select PDF to Sign:"))
-        layout.addWidget(self.input_label)
-        layout.addWidget(self.select_pdf_btn)
-        
-        layout.addWidget(QLabel("2. Select Certificate:"))
-        layout.addWidget(self.pfx_label)
-        layout.addWidget(self.select_pfx_btn)
-        
-        layout.addWidget(QLabel("3. Enter Password:"))
-        layout.addWidget(self.password_input)
-        
-        layout.addWidget(self.sign_btn)
-        layout.addStretch()
-        
-        self.controls_layout.addLayout(layout)
+        self.controls_layout.addStretch()
         
     def select_pdf(self):
         path, _ = QFileDialog.getOpenFileName(
@@ -90,7 +81,8 @@ class SignPdfTab(FeatureTab):
         )
         if path:
             self.input_path = path
-            self.input_label.setText(path)
+            filename = path.split('/')[-1].split('\\')[-1]
+            self.input_label.setText(filename)
             self.check_ready()
             
     def select_pfx(self):
@@ -99,7 +91,8 @@ class SignPdfTab(FeatureTab):
         )
         if path:
             self.pfx_path = path
-            self.pfx_label.setText(path)
+            filename = path.split('/')[-1].split('\\')[-1]
+            self.pfx_label.setText(filename)
             self.check_ready()
             
     def check_ready(self):

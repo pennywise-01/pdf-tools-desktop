@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.redact_pdf import redact_pdf
 
 import os
@@ -45,74 +45,62 @@ class RedactTab(FeatureTab):
         self.selected_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(15)
+        # Header
+        header = self.create_header(
+            "Redact PDF",
+            "Permanently remove sensitive text from your PDF."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Redact PDF")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
-        
-        description = QLabel("Permanently remove sensitive text from your PDF.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
+        # File selection
+        self.file_container, self.file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        self.file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.file_label)
-
-        select_button = QPushButton("Select PDF")
-        select_button.clicked.connect(self.select_file)
+        select_button = self.create_secondary_button("Select PDF", self.select_file)
         self.controls_layout.addWidget(select_button)
 
-        # Redaction Input
-        input_label = QLabel("Redactions:")
-        self.controls_layout.addWidget(input_label)
+        # Redaction settings section
+        redaction_section, redaction_layout = self.create_section("Redaction Settings")
         
-        self.text_input = QLineEdit()
-        self.text_input.setPlaceholderText("Enter terms, csv (e.g., Secret, ID)")
-        self.controls_layout.addWidget(self.text_input)
+        # Text input
+        input_label = self.create_label("Terms to redact (comma separated):")
+        redaction_layout.addWidget(input_label)
         
-        # Options Group
-        options_layout = QVBoxLayout()
-        options_layout.setSpacing(5)
+        self.text_input = self.create_input("Enter terms, e.g., Secret, ID, SSN")
+        redaction_layout.addWidget(self.text_input)
         
-        self.match_case_check = QCheckBox("Match Case")
-        options_layout.addWidget(self.match_case_check)
+        # Options
+        self.match_case_check = self.create_checkbox("Match Case")
+        redaction_layout.addWidget(self.match_case_check)
         
-        self.redact_numbers_check = QCheckBox("Redact All Numbers/Digits")
-        self.redact_numbers_check.setToolTip("Redacts any words containing digits (e.g. 12345, ID-99)")
-        options_layout.addWidget(self.redact_numbers_check)
-        
-        self.controls_layout.addLayout(options_layout)
+        self.redact_numbers_check = self.create_checkbox("Redact All Numbers/Digits")
+        redaction_layout.addWidget(self.redact_numbers_check)
         
         # Color Selection
         color_layout = QHBoxLayout()
-        color_layout.addWidget(QLabel("Color:"))
-        self.color_combo = QComboBox()
-        self.color_combo.addItem("Black", (0, 0, 0))
-        self.color_combo.addItem("White", (1, 1, 1))
-        self.color_combo.addItem("Red", (1, 0, 0))
+        color_label = self.create_label("Redaction Color:")
+        color_layout.addWidget(color_label)
+        self.color_combo = self.create_dropdown(["Black", "White", "Red"])
+        self.color_combo.setItemData(0, (0, 0, 0))
+        self.color_combo.setItemData(1, (1, 1, 1))
+        self.color_combo.setItemData(2, (1, 0, 0))
         color_layout.addWidget(self.color_combo)
-        self.controls_layout.addLayout(color_layout)
+        color_layout.addStretch()
+        redaction_layout.addLayout(color_layout)
+        
+        self.controls_layout.addWidget(redaction_section)
 
         # Buttons
-        button_layout = QHBoxLayout()
+        buttons_layout = QHBoxLayout()
+        buttons_layout.setSpacing(12)
         
-        self.preview_button = QPushButton("Preview Redactions")
-        self.preview_button.clicked.connect(self.preview_redaction)
-        self.preview_button.setStyleSheet("background-color: #555555; color: white;")
-        button_layout.addWidget(self.preview_button)
+        self.preview_button = self.create_secondary_button("Preview Redactions", self.preview_redaction)
+        buttons_layout.addWidget(self.preview_button)
 
-        self.redact_button = QPushButton("Apply Redaction")
-        self.redact_button.setObjectName("redact_button")
-        self.redact_button.clicked.connect(self.redact_file)
-        # Make apply button prominent - usually reddish for destructive action
-        self.redact_button.setStyleSheet("background-color: darkred; color: white; font-weight: bold;")
-        button_layout.addWidget(self.redact_button)
+        self.redact_button = self.create_danger_button("Apply Redaction", self.redact_file)
+        buttons_layout.addWidget(self.redact_button)
         
-        self.controls_layout.addLayout(button_layout)
+        self.controls_layout.addLayout(buttons_layout)
         
         self.controls_layout.addStretch()
 
@@ -120,7 +108,8 @@ class RedactTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF", "", "PDF Files (*.pdf)")
         if file:
             self.selected_file = file
-            self.file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def get_options(self):
@@ -226,5 +215,6 @@ class RedactTab(FeatureTab):
             file = files[0]
             if file.lower().endswith('.pdf'):
                 self.selected_file = file
-                self.file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.file_label.setText(filename)
                 self.preview.load_pdf(file)

@@ -1,12 +1,13 @@
 from PyQt6.QtWidgets import (
     QPushButton, QListWidget, QMessageBox, QFileDialog, QProgressDialog,
-    QVBoxLayout, QLabel, QWidget
+    QVBoxLayout, QLabel, QWidget, QHBoxLayout
 )
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.merge_pdf import merge_pdfs
+
 
 class MergeWorker(QThread):
     finished = pyqtSignal(str)
@@ -24,52 +25,56 @@ class MergeWorker(QThread):
         except Exception as e:
             self.error.emit(str(e))
 
+
 class MergeTab(FeatureTab):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.selected_merge_files = []
         
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "Merge PDFs",
+            "Combine multiple PDF files into a single document. Click items to preview."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Merge PDFs")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
-
-        description = QLabel("Select multiple PDF files to combine them into a single file.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.merge_file_list = QListWidget()
+        # File list
+        self.merge_file_list = self.create_list_widget(220)
+        self.merge_file_list.setDragDropMode(QListWidget.DragDropMode.InternalMove)
         self.merge_file_list.itemClicked.connect(self.show_merge_preview)
         self.controls_layout.addWidget(self.merge_file_list)
+        
+        # File count label
+        self.file_count_label = self.create_label("0 files selected", secondary=True)
+        self.controls_layout.addWidget(self.file_count_label)
 
+        # Buttons layout
         buttons_layout = QVBoxLayout()
-        select_button = QPushButton("Select PDFs")
-        select_button.clicked.connect(self.select_merge_files)
+        buttons_layout.setSpacing(12)
+        
+        select_button = self.create_secondary_button("Select PDFs", self.select_merge_files)
         buttons_layout.addWidget(select_button)
 
-        self.merge_button = QPushButton("Merge PDFs")
-        self.merge_button.setObjectName("merge_button")
-        self.merge_button.clicked.connect(self.merge_files)
+        self.merge_button = self.create_primary_button("Merge PDFs", self.merge_files)
         buttons_layout.addWidget(self.merge_button)
 
-        self.clear_button = QPushButton("Clear")
-        self.clear_button.setObjectName("clear_button")
-        self.clear_button.clicked.connect(self.clear_merge_list)
+        self.clear_button = self.create_danger_button("Clear All", self.clear_merge_list)
         buttons_layout.addWidget(self.clear_button)
 
         self.controls_layout.addLayout(buttons_layout)
+        self.controls_layout.addStretch()
 
     def select_merge_files(self):
         files, _ = QFileDialog.getOpenFileNames(self, "Select PDFs to Merge", "", "PDF Files (*.pdf)")
         if files:
             self.selected_merge_files.extend(files)
-            self.merge_file_list.addItems(files)
+            self.merge_file_list.addItems([f.split('/')[-1].split('\\')[-1] for f in files])
+            self.update_file_count()
+
+    def update_file_count(self):
+        count = len(self.selected_merge_files)
+        self.file_count_label.setText(f"{count} file{'s' if count != 1 else ''} selected")
 
     def merge_files(self):
         if len(self.selected_merge_files) < 2:
@@ -106,9 +111,12 @@ class MergeTab(FeatureTab):
         self.selected_merge_files.clear()
         self.merge_file_list.clear()
         self.preview.clear()
+        self.update_file_count()
 
     def show_merge_preview(self, item):
-        self.preview.load_pdf(item.text())
+        idx = self.merge_file_list.row(item)
+        if idx < len(self.selected_merge_files):
+            self.preview.load_pdf(self.selected_merge_files[idx])
 
     def handle_file_drop(self, files):
         pdf_files = [f for f in files if f.lower().endswith('.pdf')]

@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.remove_pages import remove_pages
 
 class RemovePagesWorker(QThread):
@@ -31,33 +31,26 @@ class RemovePagesTab(FeatureTab):
         self.selected_remove_pages_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "Remove Pages",
+            "Select a PDF file and choose the pages you want to remove."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Remove Pages")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
+        # File selection
+        self.file_container, self.remove_pages_file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        description = QLabel("Select a PDF file and choose the pages you want to remove.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.remove_pages_file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.remove_pages_file_label)
-
-        select_button = QPushButton("Select PDF")
-        select_button.clicked.connect(self.select_remove_pages_file)
+        select_button = self.create_secondary_button("Select PDF", self.select_remove_pages_file)
         self.controls_layout.addWidget(select_button)
 
-        pages_label = QLabel("Select pages to remove from the preview.")
+        # Instructions
+        pages_label = self.create_info_label("Select pages to remove from the preview.")
         self.controls_layout.addWidget(pages_label)
 
-        self.remove_button = QPushButton("Remove Pages")
-        self.remove_button.setObjectName("remove_button")
-        self.remove_button.clicked.connect(self.remove_pages_file)
+        # Action button
+        self.remove_button = self.create_danger_button("Remove Pages", self.remove_pages_file)
         self.controls_layout.addWidget(self.remove_button)
         
         self.controls_layout.addStretch()
@@ -66,7 +59,8 @@ class RemovePagesTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF", "", "PDF Files (*.pdf)")
         if file:
             self.selected_remove_pages_file = file
-            self.remove_pages_file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.remove_pages_file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def remove_pages_file(self):
@@ -111,5 +105,6 @@ class RemovePagesTab(FeatureTab):
             file = files[0]
             if file.lower().endswith('.pdf'):
                 self.selected_remove_pages_file = file
-                self.remove_pages_file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.remove_pages_file_label.setText(filename)
                 self.preview.load_pdf(file)

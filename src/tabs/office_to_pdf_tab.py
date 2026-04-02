@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.office_to_pdf import convert_office_to_pdf
 
 class OfficeToPDFWorker(QThread):
@@ -32,29 +32,22 @@ class OfficeToPDFTab(FeatureTab):
         self.selected_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "Office to PDF",
+            "Convert Microsoft Office files (Word, Excel, PowerPoint) to PDF."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Office to PDF")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
-        
-        description = QLabel("Convert Microsoft Office files (Word, Excel, PowerPoint) to PDF.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
+        # File selection
+        self.file_container, self.file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        self.file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.file_label)
-
-        select_button = QPushButton("Select Office File")
-        select_button.clicked.connect(self.select_file)
+        select_button = self.create_secondary_button("Select Office File", self.select_file)
         self.controls_layout.addWidget(select_button)
 
-        self.action_button = QPushButton("Convert to PDF")
-        self.action_button.clicked.connect(self.run_action)
+        # Action button
+        self.action_button = self.create_primary_button("Convert to PDF", self.run_action)
         self.controls_layout.addWidget(self.action_button)
         
         self.controls_layout.addStretch()
@@ -63,7 +56,8 @@ class OfficeToPDFTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select Office File", "", "Office Files (*.xlsx *.xls *.pptx *.ppt *.docx *.doc)")
         if file:
             self.selected_file = file
-            self.file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.file_label.setText(filename)
             self.preview.clear()
 
     def run_action(self):
@@ -99,5 +93,6 @@ class OfficeToPDFTab(FeatureTab):
             ext = file.lower().split('.')[-1]
             if ext in ['xlsx', 'xls', 'pptx', 'ppt', 'docx', 'doc']:
                 self.selected_file = file
-                self.file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.file_label.setText(filename)
                 self.preview.clear()

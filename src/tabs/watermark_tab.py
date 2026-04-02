@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.watermark import add_watermark
 
 class WatermarkWorker(QThread):
@@ -33,57 +33,56 @@ class WatermarkTab(FeatureTab):
         self.selected_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "Add Watermark",
+            "Add a text watermark to every page of your PDF."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Add Watermark")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
+        # File selection
+        self.file_container, self.file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        description = QLabel("Add a text watermark to every page of your PDF.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.file_label)
-
-        select_button = QPushButton("Select PDF")
-        select_button.clicked.connect(self.select_file)
+        select_button = self.create_secondary_button("Select PDF", self.select_file)
         self.controls_layout.addWidget(select_button)
 
+        # Watermark settings section
+        watermark_section, watermark_layout = self.create_section("Watermark Settings")
+        
         # Watermark Text
-        self.text_input = QLineEdit()
-        self.text_input.setPlaceholderText("Enter Watermark Text (e.g., CONFIDENTIAL)")
-        self.controls_layout.addWidget(self.text_input)
+        text_label = self.create_label("Watermark Text:")
+        watermark_layout.addWidget(text_label)
+        
+        self.text_input = self.create_input("Enter Watermark Text (e.g., CONFIDENTIAL)")
+        watermark_layout.addWidget(self.text_input)
 
-        # Settings
+        # Settings row
         settings_layout = QHBoxLayout()
         
         # Opacity
-        opacity_layout = QVBoxLayout()
-        opacity_layout.addWidget(QLabel("Opacity:"))
-        self.opacity_slider = QSlider(Qt.Orientation.Horizontal)
-        self.opacity_slider.setRange(0, 100)
-        self.opacity_slider.setValue(30)
-        opacity_layout.addWidget(self.opacity_slider)
-        settings_layout.addLayout(opacity_layout)
+        opacity_container = QVBoxLayout()
+        opacity_label = self.create_label("Opacity:")
+        opacity_container.addWidget(opacity_label)
+        self.opacity_slider = self.create_slider(0, 100, 30)
+        opacity_container.addWidget(self.opacity_slider)
+        settings_layout.addLayout(opacity_container)
         
         # Rotation
-        rotation_layout = QVBoxLayout()
-        rotation_layout.addWidget(QLabel("Rotation:"))
-        self.rotation_input = QLineEdit("45")
-        self.rotation_input.setFixedWidth(50)
-        rotation_layout.addWidget(self.rotation_input)
-        settings_layout.addLayout(rotation_layout)
+        rotation_container = QVBoxLayout()
+        rotation_label = self.create_label("Rotation:")
+        rotation_container.addWidget(rotation_label)
+        self.rotation_input = self.create_input("45")
+        self.rotation_input.setFixedWidth(80)
+        rotation_container.addWidget(self.rotation_input)
+        settings_layout.addLayout(rotation_container)
+        settings_layout.addStretch()
+        
+        watermark_layout.addLayout(settings_layout)
+        self.controls_layout.addWidget(watermark_section)
 
-        self.controls_layout.addLayout(settings_layout)
-
-        self.apply_button = QPushButton("Apply Watermark")
-        self.apply_button.setObjectName("apply_button")
-        self.apply_button.clicked.connect(self.apply_watermark)
+        # Action button
+        self.apply_button = self.create_primary_button("Apply Watermark", self.apply_watermark)
         self.controls_layout.addWidget(self.apply_button)
         
         self.controls_layout.addStretch()
@@ -92,7 +91,8 @@ class WatermarkTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF", "", "PDF Files (*.pdf)")
         if file:
             self.selected_file = file
-            self.file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def apply_watermark(self):
@@ -142,5 +142,6 @@ class WatermarkTab(FeatureTab):
             file = files[0]
             if file.lower().endswith('.pdf'):
                 self.selected_file = file
-                self.file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.file_label.setText(filename)
                 self.preview.load_pdf(file)

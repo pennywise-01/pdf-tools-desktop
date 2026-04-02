@@ -1,12 +1,13 @@
 from PyQt6.QtWidgets import (
     QPushButton, QLabel, QHBoxLayout, QMessageBox, QFileDialog, 
-    QProgressDialog, QVBoxLayout, QSlider
+    QProgressDialog, QVBoxLayout, QSlider, QFrame
 )
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.compress_pdf import compress_pdf
+
 
 class CompressWorker(QThread):
     finished = pyqtSignal(str)
@@ -25,72 +26,78 @@ class CompressWorker(QThread):
         except Exception as e:
             self.error.emit(str(e))
 
+
 class CompressTab(FeatureTab):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.selected_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "Compress PDF",
+            "Reduce the file size of your PDF while maintaining quality."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Compress PDF")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
+        # File selection
+        self.file_container, self.file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        description = QLabel("Reduce the file size of your PDF.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.file_label)
-
-        select_button = QPushButton("Select PDF")
-        select_button.clicked.connect(self.select_file)
+        select_button = self.create_secondary_button("Select PDF", self.select_file)
         self.controls_layout.addWidget(select_button)
 
-        # Compression Level
-        level_layout = QVBoxLayout()
-        level_layout.addWidget(QLabel("Compression Level:"))
+        # Compression Level Section
+        level_section, level_layout = self.create_section("Compression Level")
         
-        self.level_slider = QSlider(Qt.Orientation.Horizontal)
-        self.level_slider.setRange(0, 4)
-        self.level_slider.setValue(4)
+        self.level_slider = self.create_slider(0, 4, 4)
         self.level_slider.setTickPosition(QSlider.TickPosition.TicksBelow)
         self.level_slider.setTickInterval(1)
         self.level_slider.valueChanged.connect(self.update_level_label)
         level_layout.addWidget(self.level_slider)
         
-        self.level_label = QLabel("Maximum (Best Compression)")
-        level_layout.addWidget(self.level_label)
+        # Level indicator
+        level_indicator = QHBoxLayout()
+        level_indicator.setContentsMargins(0, 8, 0, 0)
         
-        self.controls_layout.addLayout(level_layout)
+        self.level_label = QLabel("Maximum")
+        self.level_label.setFont(QFont("Plus Jakarta Sans", 13, QFont.Weight.DemiBold))
+        self.level_label.setStyleSheet(f"color: {COLORS['accent']}; background: transparent;")
+        level_indicator.addWidget(self.level_label)
+        
+        self.level_desc = QLabel("Best compression, smallest file size")
+        self.level_desc.setFont(QFont("Plus Jakarta Sans", 11))
+        self.level_desc.setStyleSheet(f"color: {COLORS['text_secondary']}; background: transparent;")
+        level_indicator.addWidget(self.level_desc)
+        level_indicator.addStretch()
+        
+        level_layout.addLayout(level_indicator)
+        self.controls_layout.addWidget(level_section)
 
-        self.compress_button = QPushButton("Compress PDF")
-        self.compress_button.setObjectName("compress_button")
-        self.compress_button.clicked.connect(self.compress_file)
+        # Action button
+        self.compress_button = self.create_primary_button("Compress PDF", self.compress_file)
         self.controls_layout.addWidget(self.compress_button)
         
         self.controls_layout.addStretch()
 
     def update_level_label(self, value):
         labels = {
-            0: "None (Just Copy)",
-            1: "Low (Clean Objects)",
-            2: "Medium (Deflate Streams)",
-            3: "High (Deduplicate)",
-            4: "Maximum (Best Compression)"
+            0: ("None", "Just copy, no compression"),
+            1: ("Low", "Clean objects only"),
+            2: ("Medium", "Deflate streams"),
+            3: ("High", "Deduplicate resources"),
+            4: ("Maximum", "Best compression, smallest file size")
         }
-        self.level_label.setText(labels.get(value, "Unknown"))
+        name, desc = labels.get(value, ("Unknown", ""))
+        self.level_label.setText(name)
+        self.level_desc.setText(desc)
 
     def select_file(self):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF", "", "PDF Files (*.pdf)")
         if file:
             self.selected_file = file
-            self.file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def compress_file(self):
@@ -130,5 +137,6 @@ class CompressTab(FeatureTab):
             file = files[0]
             if file.lower().endswith('.pdf'):
                 self.selected_file = file
-                self.file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.file_label.setText(filename)
                 self.preview.load_pdf(file)

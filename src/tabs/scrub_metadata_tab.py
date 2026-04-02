@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.scrub_metadata import scrub_metadata
 
 class ScrubWorker(QThread):
@@ -30,30 +30,22 @@ class ScrubMetadataTab(FeatureTab):
         self.selected_scrub_metadata_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "Scrub Metadata",
+            "Select a PDF file to remove all metadata from it."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Scrub Metadata")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
+        # File selection
+        self.file_container, self.scrub_metadata_file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        description = QLabel("Select a PDF file to remove all metadata from it.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.scrub_metadata_file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.scrub_metadata_file_label)
-
-        select_button = QPushButton("Select PDF")
-        select_button.clicked.connect(self.select_scrub_metadata_file)
+        select_button = self.create_secondary_button("Select PDF", self.select_scrub_metadata_file)
         self.controls_layout.addWidget(select_button)
 
-        self.scrub_button = QPushButton("Scrub Metadata")
-        self.scrub_button.setObjectName("scrub_button")
-        self.scrub_button.clicked.connect(self.scrub_file_metadata)
+        # Action button
+        self.scrub_button = self.create_primary_button("Scrub Metadata", self.scrub_file_metadata)
         self.controls_layout.addWidget(self.scrub_button)
         
         self.controls_layout.addStretch()
@@ -62,7 +54,8 @@ class ScrubMetadataTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF to Scrub", "", "PDF Files (*.pdf)")
         if file:
             self.selected_scrub_metadata_file = file
-            self.scrub_metadata_file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.scrub_metadata_file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def scrub_file_metadata(self):
@@ -100,5 +93,6 @@ class ScrubMetadataTab(FeatureTab):
             file = files[0]
             if file.lower().endswith('.pdf'):
                 self.selected_scrub_metadata_file = file
-                self.scrub_metadata_file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.scrub_metadata_file_label.setText(filename)
                 self.preview.load_pdf(file)

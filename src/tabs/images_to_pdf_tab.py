@@ -1,11 +1,11 @@
 from PyQt6.QtWidgets import (
     QPushButton, QListWidget, QMessageBox, QFileDialog, QProgressDialog,
-    QVBoxLayout, QLabel, QWidget
+    QVBoxLayout, QLabel, QWidget, QHBoxLayout
 )
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.images_to_pdf import convert_images_to_pdf
 
 class ImagesToPdfWorker(QThread):
@@ -30,45 +30,43 @@ class ImagesToPdfTab(FeatureTab):
         self.selected_image_files = []
         
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "Images to PDF",
+            "Select multiple JPG or PNG images to combine them into a single PDF file."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Images to PDF")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
-
-        description = QLabel("Select multiple JPG or PNG images to combine them into a single PDF file.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.image_file_list = QListWidget()
+        # Image list
+        self.image_file_list = self.create_list_widget(180)
         self.controls_layout.addWidget(self.image_file_list)
 
-        buttons_layout = QVBoxLayout()
-        select_button = QPushButton("Select Images")
-        select_button.clicked.connect(self.select_image_files)
-        buttons_layout.addWidget(select_button)
+        # File count label
+        self.file_count_label = self.create_label("0 images selected", secondary=True)
+        self.controls_layout.addWidget(self.file_count_label)
 
-        self.convert_button = QPushButton("Convert to PDF")
-        self.convert_button.setObjectName("convert_button")
-        self.convert_button.clicked.connect(self.convert_files)
-        buttons_layout.addWidget(self.convert_button)
+        # Buttons
+        select_button = self.create_secondary_button("Select Images", self.select_image_files)
+        self.controls_layout.addWidget(select_button)
 
-        self.clear_button = QPushButton("Clear")
-        self.clear_button.setObjectName("clear_button")
-        self.clear_button.clicked.connect(self.clear_image_list)
-        buttons_layout.addWidget(self.clear_button)
+        self.convert_button = self.create_primary_button("Convert to PDF", self.convert_files)
+        self.controls_layout.addWidget(self.convert_button)
 
-        self.controls_layout.addLayout(buttons_layout)
+        self.clear_button = self.create_danger_button("Clear All", self.clear_image_list)
+        self.controls_layout.addWidget(self.clear_button)
+        
+        self.controls_layout.addStretch()
 
     def select_image_files(self):
         files, _ = QFileDialog.getOpenFileNames(self, "Select Images to Convert", "", "Image Files (*.jpg *.png)")
         if files:
             self.selected_image_files.extend(files)
-            self.image_file_list.addItems(files)
+            self.image_file_list.addItems([f.split('/')[-1].split('\\')[-1] for f in files])
+            self.update_file_count()
+
+    def update_file_count(self):
+        count = len(self.selected_image_files)
+        self.file_count_label.setText(f"{count} image{'s' if count != 1 else ''} selected")
 
     def convert_files(self):
         if len(self.selected_image_files) < 1:
@@ -105,9 +103,11 @@ class ImagesToPdfTab(FeatureTab):
         self.selected_image_files.clear()
         self.image_file_list.clear()
         self.preview.clear()
+        self.update_file_count()
 
     def handle_file_drop(self, files):
         image_files = [f for f in files if f.lower().endswith(('.jpg', '.png'))]
         if image_files:
             self.selected_image_files.extend(image_files)
-            self.image_file_list.addItems(image_files)
+            self.image_file_list.addItems([f.split('/')[-1].split('\\')[-1] for f in image_files])
+            self.update_file_count()

@@ -7,8 +7,9 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.encrypt_pdf import encrypt_pdf
+
 
 class EncryptWorker(QThread):
     finished = pyqtSignal(str)
@@ -29,121 +30,124 @@ class EncryptWorker(QThread):
         except Exception as e:
             self.error.emit(str(e))
 
+
 class EncryptTab(FeatureTab):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.selected_encrypt_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
-
-        title = QLabel("Encrypt PDF")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
-
-        description = QLabel("Select a PDF file and add a password to protect it.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
+        # Header
+        header = self.create_header(
+            "Encrypt PDF",
+            "Protect your PDF with password encryption."
+        )
+        self.controls_layout.addWidget(header)
         
-        self.encrypt_file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.encrypt_file_label)
+        # File selection
+        self.file_container, self.file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        select_button = QPushButton("Select PDF")
-        select_button.clicked.connect(self.select_encrypt_file)
+        select_button = self.create_secondary_button("Select PDF", self.select_encrypt_file)
         self.controls_layout.addWidget(select_button)
 
-        # Password
-        self.password_input, self.confirm_password_input = self.create_password_field("Password:")
+        # Password Section
+        pass_section, pass_layout = self.create_section("Password")
         
-        # Encryption Level
-        encryption_layout = QHBoxLayout()
-        encryption_label = QLabel("Encryption Level:")
-        encryption_layout.addWidget(encryption_label)
-        self.encryption_level_input = QComboBox()
-        self.encryption_level_input.addItems(["128-bit AES", "256-bit AES"])
-        self.encryption_level_input.setCurrentText("256-bit AES")
-        encryption_layout.addWidget(self.encryption_level_input)
-        self.controls_layout.addLayout(encryption_layout)
+        self.password_input = self.create_password_input("Enter password")
+        pass_layout.addWidget(self.password_input)
         
-        # Permissions
-        permissions_label = QLabel("Permissions:")
-        self.controls_layout.addWidget(permissions_label)
-        self.print_checkbox = QCheckBox("Allow Printing")
-        self.print_checkbox.setChecked(True)
-        self.controls_layout.addWidget(self.print_checkbox)
-        self.copy_checkbox = QCheckBox("Allow Copying")
-        self.copy_checkbox.setChecked(True)
-        self.controls_layout.addWidget(self.copy_checkbox)
-        self.modify_checkbox = QCheckBox("Allow Modifying")
-        self.modify_checkbox.setChecked(False)
-        self.controls_layout.addWidget(self.modify_checkbox)
+        self.confirm_password_input = self.create_password_input("Confirm password")
+        pass_layout.addWidget(self.confirm_password_input)
+        
+        # Password options row
+        options_row = QHBoxLayout()
+        options_row.setSpacing(12)
+        
+        self.show_password = self.create_checkbox("Show")
+        self.show_password.toggled.connect(self.toggle_password_visibility)
+        options_row.addWidget(self.show_password)
+        
+        generate_btn = self.create_secondary_button("Generate", self.generate_and_set_password)
+        generate_btn.setFixedWidth(100)
+        options_row.addWidget(generate_btn)
+        options_row.addStretch()
+        
+        pass_layout.addLayout(options_row)
+        
+        # Strength indicator
+        strength_container = QWidget()
+        strength_container.setStyleSheet("background: transparent;")
+        strength_layout = QHBoxLayout(strength_container)
+        strength_layout.setContentsMargins(0, 8, 0, 0)
+        strength_layout.setSpacing(10)
+        
+        self.strength_bar = self.create_progress_bar()
+        self.strength_bar.setRange(0, 4)
+        self.strength_bar.setFixedWidth(120)
+        strength_layout.addWidget(self.strength_bar)
+        
+        self.strength_label = QLabel("Weak")
+        self.strength_label.setFont(QFont("Plus Jakarta Sans", 11))
+        self.strength_label.setStyleSheet(f"color: {COLORS['error']}; background: transparent;")
+        strength_layout.addWidget(self.strength_label)
+        strength_layout.addStretch()
+        
+        self.password_input.textChanged.connect(self.update_password_strength)
+        pass_layout.addWidget(strength_container)
+        
+        self.controls_layout.addWidget(pass_section)
 
-        self.encrypt_button = QPushButton("Encrypt PDF")
-        self.encrypt_button.setObjectName("encrypt_button")
-        self.encrypt_button.clicked.connect(self.encrypt_file)
+        # Encryption Options Section
+        options_section, options_layout = self.create_section("Encryption Options")
+        
+        # Encryption level
+        level_row = QHBoxLayout()
+        level_label = self.create_label("Encryption Level:")
+        level_row.addWidget(level_label)
+        
+        self.encryption_level_input = self.create_dropdown(["128-bit AES", "256-bit AES"])
+        self.encryption_level_input.setCurrentText("256-bit AES")
+        level_row.addWidget(self.encryption_level_input, 1)
+        options_layout.addLayout(level_row)
+        
+        self.controls_layout.addWidget(options_section)
+        
+        # Permissions Section
+        perms_section, perms_layout = self.create_section("Permissions")
+        
+        self.print_checkbox = self.create_checkbox("Allow Printing", True)
+        perms_layout.addWidget(self.print_checkbox)
+        
+        self.copy_checkbox = self.create_checkbox("Allow Copying", True)
+        perms_layout.addWidget(self.copy_checkbox)
+        
+        self.modify_checkbox = self.create_checkbox("Allow Modifying", False)
+        perms_layout.addWidget(self.modify_checkbox)
+        
+        self.controls_layout.addWidget(perms_section)
+
+        # Action button
+        self.encrypt_button = self.create_primary_button("Encrypt PDF", self.encrypt_file)
         self.controls_layout.addWidget(self.encrypt_button)
         
         self.controls_layout.addStretch()
 
-    def create_password_field(self, label):
-        layout = QVBoxLayout()
+    def toggle_password_visibility(self, show):
+        mode = QLineEdit.EchoMode.Normal if show else QLineEdit.EchoMode.Password
+        self.password_input.setEchoMode(mode)
+        self.confirm_password_input.setEchoMode(mode)
         
-        pass_layout = QHBoxLayout()
-        pass_label = QLabel(label)
-        pass_layout.addWidget(pass_label)
-        password_input = QLineEdit()
-        password_input.setEchoMode(QLineEdit.EchoMode.Password)
-        pass_layout.addWidget(password_input)
-        layout.addLayout(pass_layout)
-
-        confirm_pass_layout = QHBoxLayout()
-        confirm_pass_label = QLabel("Confirm " + label)
-        confirm_pass_layout.addWidget(confirm_pass_label)
-        confirm_password_input = QLineEdit()
-        confirm_password_input.setEchoMode(QLineEdit.EchoMode.Password)
-        confirm_pass_layout.addWidget(confirm_password_input)
-        layout.addLayout(confirm_pass_layout)
-
-        buttons_layout = QHBoxLayout()
-        show_hide_button = QCheckBox("Show")
-        show_hide_button.toggled.connect(lambda checked: password_input.setEchoMode(QLineEdit.EchoMode.Normal if checked else QLineEdit.EchoMode.Password))
-        show_hide_button.toggled.connect(lambda checked: confirm_password_input.setEchoMode(QLineEdit.EchoMode.Normal if checked else QLineEdit.EchoMode.Password))
-        buttons_layout.addWidget(show_hide_button)
-
-        generate_button = QPushButton("Generate")
-        generate_button.clicked.connect(lambda: self.set_generated_password(password_input, confirm_password_input))
-        buttons_layout.addWidget(generate_button)
-        layout.addLayout(buttons_layout)
-
-        strength_layout = QHBoxLayout()
-        strength_bar = QProgressBar()
-        strength_bar.setRange(0, 4)
-        strength_bar.setTextVisible(False)
-        strength_layout.addWidget(strength_bar)
-        
-        strength_label = QLabel("Weak")
-        strength_layout.addWidget(strength_label)
-        
-        password_input.textChanged.connect(lambda text: self.update_password_strength(text, strength_bar, strength_label))
-        layout.addLayout(strength_layout)
-        
-        self.controls_layout.addLayout(layout)
-        return password_input, confirm_password_input
-    
-    def set_generated_password(self, password_input, confirm_password_input):
+    def generate_and_set_password(self):
         password = self.generate_password()
-        password_input.setText(password)
-        confirm_password_input.setText(password)
+        self.password_input.setText(password)
+        self.confirm_password_input.setText(password)
         
     def generate_password(self, length=16):
         chars = string.ascii_letters + string.digits + string.punctuation
         return "".join(random.choice(chars) for _ in range(length))
 
-    def update_password_strength(self, password, strength_bar, strength_label):
+    def update_password_strength(self, password):
         strength = 0
         if any(c.islower() for c in password):
             strength += 1
@@ -154,22 +158,41 @@ class EncryptTab(FeatureTab):
         if any(c in string.punctuation for c in password):
             strength += 1
         
-        strength_bar.setValue(strength)
+        self.strength_bar.setValue(strength)
+        
         if strength <= 1:
-            strength_bar.setStyleSheet("QProgressBar::chunk { background-color: #E94560; }")
-            strength_label.setText("Weak")
+            color = COLORS['error']
+            text = "Weak"
+        elif strength <= 2:
+            color = COLORS['warning']
+            text = "Fair"
         elif strength <= 3:
-            strength_bar.setStyleSheet("QProgressBar::chunk { background-color: orange; }")
-            strength_label.setText("Medium")
+            color = COLORS['warning']
+            text = "Good"
         else:
-            strength_bar.setStyleSheet("QProgressBar::chunk { background-color: lightgreen; }")
-            strength_label.setText("Strong")
+            color = COLORS['success']
+            text = "Strong"
+            
+        self.strength_label.setText(text)
+        self.strength_label.setStyleSheet(f"color: {color}; background: transparent;")
+        self.strength_bar.setStyleSheet(f"""
+            QProgressBar {{
+                background-color: {COLORS['surface_elevated']};
+                border: none;
+                border-radius: 4px;
+            }}
+            QProgressBar::chunk {{
+                background-color: {color};
+                border-radius: 4px;
+            }}
+        """)
 
     def select_encrypt_file(self):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF", "", "PDF Files (*.pdf)")
         if file:
             self.selected_encrypt_file = file
-            self.encrypt_file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def encrypt_file(self):
@@ -226,5 +249,6 @@ class EncryptTab(FeatureTab):
             file = files[0]
             if file.lower().endswith('.pdf'):
                 self.selected_encrypt_file = file
-                self.encrypt_file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.file_label.setText(filename)
                 self.preview.load_pdf(file)

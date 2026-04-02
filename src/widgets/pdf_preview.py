@@ -2,9 +2,20 @@ from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QListWidget, QListWidgetItem, QAbstractItemView,
     QHBoxLayout, QLabel, QSlider
 )
-from PyQt6.QtGui import QIcon, QPixmap
+from PyQt6.QtGui import QIcon, QPixmap, QFont
 from PyQt6.QtCore import QSize, Qt
 import fitz  # PyMuPDF
+
+# Color palette
+COLORS = {
+    'bg': '#0f1419',
+    'surface': '#1c2128',
+    'surface_alt': '#262d36',
+    'border': '#30363d',
+    'text': '#e6edf3',
+    'text_secondary': '#8b949e',
+    'accent': '#2dd4bf',
+}
 
 class PdfPreviewWidget(QWidget):
     def __init__(self, parent=None):
@@ -14,11 +25,12 @@ class PdfPreviewWidget(QWidget):
         self.zoom_level = 1.0
         self.base_icon_w = 225
         self.base_icon_h = 300
-        # Grid needs to be slightly larger than icon to accommodate text and spacing
         self.grid_padding_w = 20
         self.grid_padding_h = 20
         
         self.layout = QVBoxLayout(self)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setSpacing(12)
         
         # Zoom Toolbar
         self.setup_zoom_toolbar()
@@ -30,7 +42,25 @@ class PdfPreviewWidget(QWidget):
         self.list_widget.setViewMode(QListWidget.ViewMode.IconMode)
         self.list_widget.setDragDropMode(QAbstractItemView.DragDropMode.NoDragDrop)
         self.list_widget.setSelectionMode(QAbstractItemView.SelectionMode.MultiSelection)
-        self.list_widget.setStyleSheet("border: 1px solid black;")
+        self.list_widget.setStyleSheet(f"""
+            QListWidget {{
+                border: 1px solid {COLORS['border']};
+                background-color: {COLORS['surface_alt']};
+                border-radius: 8px;
+            }}
+            QListWidget::item {{
+                color: {COLORS['text']};
+                padding: 8px;
+                border-radius: 6px;
+            }}
+            QListWidget::item:selected {{
+                background-color: rgba(45, 212, 191, 0.15);
+                border: 1px solid {COLORS['accent']};
+            }}
+            QListWidget::item:hover {{
+                background-color: rgba(45, 212, 191, 0.08);
+            }}
+        """)
         
         # Initial size setup
         self.update_list_size()
@@ -39,25 +69,32 @@ class PdfPreviewWidget(QWidget):
 
     def setup_zoom_toolbar(self):
         toolbar = QHBoxLayout()
-        toolbar.setSpacing(5)
+        toolbar.setSpacing(10)
         toolbar.setContentsMargins(0, 0, 0, 0)
+        
+        # Zoom label
+        zoom_label = QLabel("Zoom")
+        zoom_label.setFont(QFont("Plus Jakarta Sans", 11))
+        zoom_label.setStyleSheet(f"color: {COLORS['text_secondary']}; background: transparent;")
+        toolbar.addWidget(zoom_label)
         
         # Slider
         self.zoom_slider = QSlider(Qt.Orientation.Horizontal)
-        self.zoom_slider.setRange(30, 300) # 30% to 300%
+        self.zoom_slider.setRange(30, 300)
         self.zoom_slider.setValue(100)
-        self.zoom_slider.setTickPosition(QSlider.TickPosition.TicksBelow)
-        self.zoom_slider.setTickInterval(50)
+        self.zoom_slider.setTickPosition(QSlider.TickPosition.NoTicks)
         self.zoom_slider.setSingleStep(10)
         self.zoom_slider.setPageStep(50)
         self.zoom_slider.valueChanged.connect(self.on_slider_value_changed)
         self.zoom_slider.sliderReleased.connect(self.on_slider_released)
-        toolbar.addWidget(self.zoom_slider)
+        toolbar.addWidget(self.zoom_slider, 1)
         
         # Percentage
         self.zoom_display = QLabel("100%")
+        self.zoom_display.setFont(QFont("Plus Jakarta Sans", 11, QFont.Weight.Medium))
         self.zoom_display.setFixedWidth(50)
         self.zoom_display.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.zoom_display.setStyleSheet(f"color: {COLORS['accent']}; background: transparent;")
         toolbar.addWidget(self.zoom_display)
         
         self.layout.addLayout(toolbar)
@@ -95,11 +132,7 @@ class PdfPreviewWidget(QWidget):
         try:
             doc = fitz.open(self.current_pdf_path)
             
-            # Rendering DPI based on zoom to keep sharpness
-            # Base 72 DPI at 1.0 zoom.
             current_dpi = int(72 * self.zoom_level)
-            
-            # Limit preview to first 20 pages to prevent memory issues/crashes with large/scanned docs
             max_preview_pages = 20
             
             for i, page in enumerate(doc):

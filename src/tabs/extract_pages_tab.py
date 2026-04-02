@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.split_pdf import split_pdf
 
 def to_range_string(numbers):
@@ -52,33 +52,26 @@ class ExtractPagesTab(FeatureTab):
         self.selected_extract_pages_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "Extract Pages",
+            "Select a PDF file and choose the pages you want to extract into a new file."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Extract Pages")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
+        # File selection
+        self.file_container, self.extract_pages_file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        description = QLabel("Select a PDF file and choose the pages you want to extract into a new file.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.extract_pages_file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.extract_pages_file_label)
-
-        select_button = QPushButton("Select PDF")
-        select_button.clicked.connect(self.select_extract_pages_file)
+        select_button = self.create_secondary_button("Select PDF", self.select_extract_pages_file)
         self.controls_layout.addWidget(select_button)
 
-        pages_label = QLabel("Select pages to extract from the preview.")
+        # Instructions
+        pages_label = self.create_info_label("Select pages to extract from the preview.")
         self.controls_layout.addWidget(pages_label)
 
-        self.extract_button = QPushButton("Extract Pages")
-        self.extract_button.setObjectName("extract_button")
-        self.extract_button.clicked.connect(self.extract_pages)
+        # Action button
+        self.extract_button = self.create_primary_button("Extract Pages", self.extract_pages)
         self.controls_layout.addWidget(self.extract_button)
         
         self.controls_layout.addStretch()
@@ -88,7 +81,8 @@ class ExtractPagesTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF to Extract Pages from", "", "PDF Files (*.pdf)")
         if file:
             self.selected_extract_pages_file = file
-            self.extract_pages_file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.extract_pages_file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def extract_pages(self):
@@ -133,5 +127,6 @@ class ExtractPagesTab(FeatureTab):
             file = files[0]
             if file.lower().endswith('.pdf'):
                 self.selected_extract_pages_file = file
-                self.extract_pages_file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.extract_pages_file_label.setText(filename)
                 self.preview.load_pdf(file)

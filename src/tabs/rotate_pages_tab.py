@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 from PyQt6.QtGui import QFont
 
-from widgets.feature_tab import FeatureTab
+from widgets.feature_tab import FeatureTab, COLORS
 from features.rotate_pages import rotate_pages
 
 class RotateWorker(QThread):
@@ -32,45 +32,44 @@ class RotatePagesTab(FeatureTab):
         self.selected_rotate_pages_file = None
 
     def setup_controls(self):
-        self.controls_layout.setSpacing(20)
+        # Header
+        header = self.create_header(
+            "Rotate Pages",
+            "Select a PDF file and choose a page and rotation angle."
+        )
+        self.controls_layout.addWidget(header)
 
-        title = QLabel("Rotate Pages")
-        title_font = QFont()
-        title_font.setPointSize(20)
-        title_font.setBold(True)
-        title.setFont(title_font)
-        self.controls_layout.addWidget(title)
+        # File selection
+        self.file_container, self.rotate_pages_file_label = self.create_file_label()
+        self.controls_layout.addWidget(self.file_container)
 
-        description = QLabel("Select a PDF file and choose a page and rotation angle.")
-        description.setWordWrap(True)
-        description.setStyleSheet("color: #C0C0C0;")
-        self.controls_layout.addWidget(description)
-
-        self.rotate_pages_file_label = QLabel("No file selected.")
-        self.controls_layout.addWidget(self.rotate_pages_file_label)
-
-        select_button = QPushButton("Select PDF")
-        select_button.clicked.connect(self.select_rotate_pages_file)
+        select_button = self.create_secondary_button("Select PDF", self.select_rotate_pages_file)
         self.controls_layout.addWidget(select_button)
 
-        page_number_layout = QHBoxLayout()
-        page_number_label = QLabel("Page Number:")
-        page_number_layout.addWidget(page_number_label)
-        self.rotate_page_number_input = QLineEdit()
-        page_number_layout.addWidget(self.rotate_page_number_input)
-        self.controls_layout.addLayout(page_number_layout)
+        # Rotation options section
+        options_section, options_layout = self.create_section("Rotation Options")
+        
+        # Page number
+        page_layout = QHBoxLayout()
+        page_label = self.create_label("Page Number:")
+        page_layout.addWidget(page_label)
+        self.rotate_page_number_input = self.create_input("Enter page number")
+        page_layout.addWidget(self.rotate_page_number_input)
+        options_layout.addLayout(page_layout)
 
+        # Angle
         angle_layout = QHBoxLayout()
-        angle_label = QLabel("Rotation Angle:")
+        angle_label = self.create_label("Rotation Angle:")
         angle_layout.addWidget(angle_label)
-        self.rotate_angle_input = QComboBox()
-        self.rotate_angle_input.addItems(["90", "180", "270"])
+        self.rotate_angle_input = self.create_dropdown(["90", "180", "270"])
         angle_layout.addWidget(self.rotate_angle_input)
-        self.controls_layout.addLayout(angle_layout)
+        angle_layout.addStretch()
+        options_layout.addLayout(angle_layout)
+        
+        self.controls_layout.addWidget(options_section)
 
-        self.rotate_button = QPushButton("Rotate Page")
-        self.rotate_button.setObjectName("rotate_button")
-        self.rotate_button.clicked.connect(self.rotate_page)
+        # Action button
+        self.rotate_button = self.create_primary_button("Rotate Page", self.rotate_page)
         self.controls_layout.addWidget(self.rotate_button)
         
         self.controls_layout.addStretch()
@@ -79,7 +78,8 @@ class RotatePagesTab(FeatureTab):
         file, _ = QFileDialog.getOpenFileName(self, "Select PDF", "", "PDF Files (*.pdf)")
         if file:
             self.selected_rotate_pages_file = file
-            self.rotate_pages_file_label.setText(file)
+            filename = file.split('/')[-1].split('\\')[-1]
+            self.rotate_pages_file_label.setText(filename)
             self.preview.load_pdf(file)
 
     def rotate_page(self):
@@ -125,5 +125,6 @@ class RotatePagesTab(FeatureTab):
             file = files[0]
             if file.lower().endswith('.pdf'):
                 self.selected_rotate_pages_file = file
-                self.rotate_pages_file_label.setText(file)
+                filename = file.split('/')[-1].split('\\')[-1]
+                self.rotate_pages_file_label.setText(filename)
                 self.preview.load_pdf(file)
