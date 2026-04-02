@@ -25,8 +25,8 @@ from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QStackedWidget, QComboBox, QToolBar,
     QStatusBar, QLabel, QWidget, QHBoxLayout, QFrame, QPushButton
 )
-from PyQt6.QtGui import QIcon, QAction, QFont, QPixmap, QImage
-from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtGui import QIcon, QAction, QFont, QPixmap, QPainter, QPen, QColor, QPolygon
+from PyQt6.QtCore import QSize, Qt, QPoint
 
 from tabs.merge_tab import MergeTab
 from tabs.split_tab import SplitTab
@@ -148,15 +148,27 @@ class MainWindow(QMainWindow):
             }
         """)
         
-        # Create home icon using SVG
-        home_icon_svg = """
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f0f4f8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-        </svg>
-        """
-        home_icon = QIcon(QPixmap.fromImage(QImage.fromData(home_icon_svg.encode())))
-        home_btn.setIcon(home_icon)
+        # Create home icon using QPainter
+        home_pixmap = QPixmap(24, 24)
+        home_pixmap.fill(Qt.GlobalColor.transparent)
+        painter = QPainter(home_pixmap)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        pen = QPen(QColor("#f0f4f8"))
+        pen.setWidth(2)
+        pen.setCapStyle(Qt.PenCapStyle.RoundCap)
+        pen.setJoinStyle(Qt.PenJoinStyle.RoundJoin)
+        painter.setPen(pen)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        # Draw house roof
+        roof = QPolygon([QPoint(12, 3), QPoint(3, 10), QPoint(21, 10)])
+        painter.drawPolyline(roof)
+        # Draw house body
+        painter.drawRect(5, 10, 14, 11)
+        # Draw door
+        painter.drawRect(10, 14, 4, 7)
+        painter.end()
+        
+        home_btn.setIcon(QIcon(home_pixmap))
         home_btn.setIconSize(QSize(24, 24))
         
         # Connect button click
