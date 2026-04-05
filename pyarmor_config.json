@@ -1,0 +1,46 @@
+{
+  "version": "2.0",
+  "name": "pdf_tools_desktop",
+  "obfuscation": {
+    "mode": "advanced",
+    "restrict": 1,
+    "restrict_module": 1,
+    "advanced_mode": 2,
+    "mix_str": 1,
+    "mix_name": 2,
+    "cross_protection": 1,
+    "plugins": []
+  },
+  "runtime": {
+    "platforms": ["windows.x86_64", "darwin.x86_64", "linux.x86_64"],
+    "period": 0,
+    "file_encoding": "utf-8"
+  },
+  "build": {
+    "src": "src",
+    "output": "dist/obfuscated",
+    "entry": ["main.py"],
+    "exclude": [
+      "__pycache__",
+      "*.pyc",
+      "*.pyo",
+      ".git",
+      ".venv",
+      "tests",
+      "dist",
+      "build"
+    ],
+    "copy_files": [
+      "style.qss",
+      "../icon/**/*"
+    ]
+  },
+  "license": {
+    "type": "auto",
+    "expired": 0,
+    "harddisk": [],
+    "mac": [],
+    "ipv4": [],
+    "data": ""
+  }
+}

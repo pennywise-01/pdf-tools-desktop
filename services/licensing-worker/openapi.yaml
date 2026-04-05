@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  title: PDF Tools Licensing API
+  version: 1.0.0
+  description: Webhook + internal APIs for issuing offline PTL1 licenses.
+servers:
+  - url: https://licensing.example.com
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  now:
+                    type: string
+                    format: date-time
+  /webhooks/paddle:
+    post:
+      summary: Receive Paddle webhook events
+      description: Requires Paddle-Signature header verification.
+      responses:
+        '200':
+          description: Event accepted
+        '401':
+          description: Signature invalid
+        '500':
+          description: Processing failed; Paddle should retry
+  /api/v1/licenses/issue:
+    post:
+      summary: Issue or reuse license for an order
+      security:
+        - InternalApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueLicenseRequest'
+      responses:
+        '200':
+          description: Existing license reused
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueLicenseResponse'
+        '201':
+          description: New license issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueLicenseResponse'
+        '401':
+          description: Unauthorized
+  /api/v1/licenses/claim:
+    post:
+      summary: Claim license token by order id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [orderId]
+              properties:
+                orderId:
+                  type: string
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: License returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  license:
+                    $ref: '#/components/schemas/License'
+        '403':
+          description: Email mismatch
+        '404':
+          description: License not found
+        '410':
+          description: License revoked
+  /api/v1/licenses/revoke:
+    post:
+      summary: Revoke an issued license by order id
+      security:
+        - InternalApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [orderId]
+              properties:
+                orderId:
+                  type: string
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Revoked
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found or already revoked
+  /api/v1/licenses/{licenseId}:
+    get:
+      summary: Fetch license by license id
+      security:
+        - InternalApiKey: []
+      parameters:
+        - name: licenseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: License
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  license:
+                    $ref: '#/components/schemas/License'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found
+components:
+  securitySchemes:
+    InternalApiKey:
+      type: apiKey
+      in: header
+      name: x-internal-api-key
+  schemas:
+    IssueLicenseRequest:
+      type: object
+      required: [orderId]
+      properties:
+        orderId:
+          type: string
+        customerId:
+          type: string
+        customerEmail:
+          type: string
+          format: email
+        majorVersionMax:
+          type: integer
+          minimum: 1
+        notBefore:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        features:
+          type: array
+          items:
+            type: string
+    License:
+      type: object
+      properties:
+        license_id:
+          type: string
+        order_id:
+          type: string
+        token:
+          type: string
+        tier:
+          type: string
+        major_version_max:
+          type: integer
+        features:
+          type: array
+          nullable: true
+          items:
+            type: string
+        issued_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          nullable: true
+          format: date-time
+        revoked_at:
+          type: string
+          nullable: true
+          format: date-time
+    IssueLicenseResponse:
+      type: object
+      properties:
+        issued:
+          type: boolean
+        license:
+          $ref: '#/components/schemas/License'
+        claims:
+          type: object
+          nullable: true

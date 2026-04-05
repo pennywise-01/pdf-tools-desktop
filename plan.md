@@ -117,3 +117,14 @@ Once the core features are built, these MVPs will focus on creating a "Pro" vers
 
 *   **Packaging:** Use `PyInstaller` or `cx_Freeze` to package the Python application, its dependencies, and the Tesseract binaries into a single, self-contained executable for each target platform (Windows, macOS, Linux).
 *   **Code Signing:** For Windows and macOS, purchase a code-signing certificate to sign the final executable. This is essential to avoid warnings from operating systems and antivirus software, and it is a prerequisite for distribution on platforms like the Mac App Store.
+
+---
+
+## 8. MVP7 Implementation and Production Activation Docs
+
+The implementation status, architecture choice, and full production go-live checklist for licensing are documented in:
+
+*   `docs/licensing/MVP7_IMPLEMENTATION_AND_GO_LIVE.md`
+*   `docs/licensing/MVP7_LICENSE_RUNBOOK.md`
+*   `services/licensing-worker/README.md`
+*   `services/licensing-worker/openapi.yaml`

@@ -24,3 +24,19 @@ LibreOffice result: True, Converted with LibreOffice (editable text preserved)
 Attempting LibreOffice conversion...
 LibreOffice path found: C:\LibreOfficePortable\App\libreoffice\program\soffice.exe
 LibreOffice result: True, Converted with LibreOffice (editable text preserved)
+
+--- Starting conversion for C:/Users/ishig/Downloads/convertedppttoword.pdf ---
+Attempting LibreOffice conversion...
+LibreOffice path found: C:\LibreOfficePortable\App\libreoffice\program\soffice.exe
+LibreOffice result: True, Converted with LibreOffice (editable text preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pptx_scan_ld08xf73\scan.pdf ---
+Attempting LibreOffice conversion...
+LibreOffice path found: C:\LibreOfficePortable\App\libreoffice\program\soffice.exe
+LibreOffice result: True, Converted with LibreOffice (editable text preserved)
+
+--- Starting conversion for C:/Users/ishig/Downloads/convertedppttoword.pdf ---
+Source has extractable text: False
+Attempting LibreOffice conversion...
+LibreOffice path found: C:\LibreOfficePortable\App\libreoffice\program\soffice.exe
+LibreOffice result: True, Converted with LibreOffice

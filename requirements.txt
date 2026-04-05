@@ -15,5 +15,7 @@ pandas
 openpyxl
 python-pptx
 comtypes
+pyarmor
+pyinstaller
 
 

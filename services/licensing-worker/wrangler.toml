@@ -1,0 +1,21 @@
+name = "pdf-tools-licensing"
+main = "src/index.ts"
+compatibility_date = "2026-04-03"
+
+[vars]
+LICENSE_DEFAULT_MAJOR_VERSION_MAX = "2"
+PADDLE_API_BASE_URL = "https://sandbox-api.paddle.com"
+
+[[d1_databases]]
+binding = "LICENSING_DB"
+database_name = "pdf-tools-licensing"
+database_id = "590df081-2891-48ba-a16e-a05ff140221b"
+
+# Required secrets:
+# wrangler secret put PADDLE_WEBHOOK_SECRET
+# wrangler secret put INTERNAL_API_KEY
+# wrangler secret put LICENSE_SIGNING_PRIVATE_KEY_B64URL
+# wrangler secret put LICENSE_SIGNING_KID
+# wrangler secret put PADDLE_API_KEY           (optional, used to resolve customer email for activation emails)
+# wrangler secret put RESEND_API_KEY            (optional)
+# wrangler secret put RESEND_FROM_EMAIL         (optional)

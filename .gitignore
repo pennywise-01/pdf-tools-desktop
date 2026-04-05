@@ -2,3 +2,15 @@
 /agent
 # Snyk Security Extension - AI Rules (auto-generated)
 .github/instructions/snyk_rules.instructions.md
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local secrets
+.secrets/
+
+# Node/service artifacts
+services/licensing-worker/node_modules/
+services/licensing-worker/.wrangler/
