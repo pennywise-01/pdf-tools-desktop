@@ -32,6 +32,39 @@ COLORS = {
     'gradient_end': '#8b5cf6',
 }
 
+
+class ElidedFileLabel(QLabel):
+    """A single-line label that keeps long file names readable in narrow layouts."""
+
+    def __init__(self, text="", parent=None):
+        super().__init__(parent)
+        self._full_text = ""
+        self.setWordWrap(False)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        self.setText(text)
+
+    def setText(self, text):  # noqa: N802 - Qt API compatibility
+        self._full_text = text or ""
+        self._update_elided_text()
+
+    def resizeEvent(self, event):  # noqa: N802 - Qt API compatibility
+        super().resizeEvent(event)
+        self._update_elided_text()
+
+    def _update_elided_text(self):
+        available_width = max(self.contentsRect().width(), 0)
+        if available_width <= 0:
+            super().setText(self._full_text)
+            return
+
+        elided = self.fontMetrics().elidedText(
+            self._full_text,
+            Qt.TextElideMode.ElideMiddle,
+            available_width,
+        )
+        super().setText(elided)
+        self.setToolTip(self._full_text if elided != self._full_text else "")
+
 class FeatureTab(QWidget):
     """Base class for all feature tabs with modern professional styling"""
     
@@ -267,11 +300,10 @@ class FeatureTab(QWidget):
         icon.setStyleSheet("background: transparent;")
         layout.addWidget(icon)
         
-        label = QLabel(text)
+        label = ElidedFileLabel(text)
         label.setObjectName("fileLabel")
         label.setFont(QFont("Plus Jakarta Sans", 12))
         label.setStyleSheet(f"color: {COLORS['text_secondary']}; background: transparent;")
-        label.setWordWrap(True)
         layout.addWidget(label, 1)
         
         return container, label

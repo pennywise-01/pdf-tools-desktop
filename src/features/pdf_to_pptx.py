@@ -19,6 +19,40 @@ except ImportError:
     HAS_ASPOSE = False
 
 
+def pdf_has_extractable_text(input_path, sample_pages=3):
+    """Return True when the PDF appears to contain an extractable text layer."""
+    try:
+        doc = fitz.open(input_path)
+        page_count = min(len(doc), max(1, sample_pages))
+        for index in range(page_count):
+            text = doc[index].get_text("text")
+            if text and text.strip():
+                doc.close()
+                return True
+        doc.close()
+        return False
+    except Exception:
+        # Fail open so conversion continues even if text inspection fails.
+        return True
+
+
+def _finalize_success_message(message, source_has_text, method):
+    if not source_has_text:
+        return (
+            message
+            + " Source PDF appears image-only/scanned, so slides may be non-editable. "
+            + "Run OCR first if you need editable text."
+        )
+
+    if method == "image":
+        return (
+            message
+            + " Editable text was not preserved because conversion fell back to image-based slides."
+        )
+
+    return message
+
+
 def find_libreoffice():
     """Find LibreOffice installation path."""
     project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -26,8 +60,8 @@ def find_libreoffice():
     # Check workspace portable versions
     workspace_paths = [
         os.path.join(project_root, "LibreOfficePortable", "App", "libreoffice", "program", "soffice.exe"),
-        # Handle the case where double folder creation might have happened
-        os.path.join(project_root, "LibreOfficePortableLibreOfficePortable", "App", "libreoffice", "program", "soffice.exe"),
+        # Handle the case where nested portable extraction may happen.
+        os.path.join(project_root, "LibreOfficePortable", "LibreOfficePortable", "App", "libreoffice", "program", "soffice.exe"),
     ]
 
     possible_paths = workspace_paths + [
@@ -127,7 +161,7 @@ def convert_with_libreoffice(input_path, output_path):
         if os.path.exists(temp_output):
             shutil.move(temp_output, output_path)
             shutil.rmtree(temp_dir, ignore_errors=True)
-            return True, "Converted with LibreOffice (editable text preserved)"
+            return True, "Converted with LibreOffice"
         else:
             shutil.rmtree(temp_dir, ignore_errors=True)
             return False, f"LibreOffice conversion failed: {result.stderr}"
@@ -394,6 +428,8 @@ def convert_pdf_to_pptx(input_path, output_path):
     log_debug(f"\n--- Starting conversion for {input_path} ---")
     try:
         aspose_error = None
+        source_has_text = pdf_has_extractable_text(input_path)
+        log_debug(f"Source has extractable text: {source_has_text}")
         
         # 1. Try LibreOffice first (Best quality open source engine)
         log_debug("Attempting LibreOffice conversion...")
@@ -408,7 +444,7 @@ def convert_pdf_to_pptx(input_path, output_path):
                 "output": output_path,
                 "method": "libreoffice"
             })
-            return True, message
+            return True, _finalize_success_message(message, source_has_text, "libreoffice")
 
         # 2. Try Aspose second
         if HAS_ASPOSE:
@@ -421,7 +457,7 @@ def convert_pdf_to_pptx(input_path, output_path):
                     "output": output_path,
                     "method": "aspose"
                 })
-                return True, message
+                return True, _finalize_success_message(message, source_has_text, "aspose")
             else:
                 aspose_error = message
         else:
@@ -437,7 +473,7 @@ def convert_pdf_to_pptx(input_path, output_path):
                 "output": output_path,
                 "method": "custom_engine"
             })
-            return True, message
+            return True, _finalize_success_message(message, source_has_text, "custom_engine")
         
         # 4. Fall back to image-based conversion
         log_debug("Attempting Image-based conversion...")
@@ -452,7 +488,7 @@ def convert_pdf_to_pptx(input_path, output_path):
             hint = ""
             if not HAS_ASPOSE:
                 hint = " (pip install aspose.slides for editable text)"
-            return True, message + hint
+            return True, _finalize_success_message(message + hint, source_has_text, "image")
         
         if aspose_error:
            return False, f"Aspose conversion failed: {aspose_error}. Fallback methods also failed."

@@ -23,18 +23,21 @@ class LibreOfficeConverter:
         # Navigate up to the project root (src/utils -> src -> root)
         project_root = os.path.abspath(os.path.join(current_dir, "..", ".."))
         
-        # Construct the expected path
-        soffice_path = os.path.join(
-            project_root, 
-            "LibreOfficePortable", 
-            "App", 
-            "libreoffice", 
-            "program", 
-            "soffice.exe"
-        )
-        
-        if os.path.exists(soffice_path):
-            return soffice_path
+        candidates = [
+            os.path.join(project_root, "LibreOfficePortable", "App", "libreoffice", "program", "soffice.exe"),
+            os.path.join(project_root, "LibreOfficePortable", "LibreOfficePortable", "App", "libreoffice", "program", "soffice.exe"),
+            r"C:\LibreOffice\program\soffice.exe",
+            r"C:\LibreOfficePortable\App\libreoffice\program\soffice.exe",
+            r"C:\PortableApps\LibreOfficePortable\App\libreoffice\program\soffice.exe",
+            r"C:\Program Files\LibreOffice\program\soffice.exe",
+            r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
+            shutil.which("soffice"),
+            shutil.which("libreoffice"),
+        ]
+
+        for soffice_path in candidates:
+            if soffice_path and os.path.exists(soffice_path):
+                return soffice_path
         
         return None
 

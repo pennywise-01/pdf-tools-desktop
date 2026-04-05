@@ -41,7 +41,7 @@ QToolBar {
     background-color: #141c24;
     border: none;
     border-bottom: 1px solid #2a3744;
-    padding: 10px 20px;
+    padding: 0px;
     spacing: 14px;
 }
 

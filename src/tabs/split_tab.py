@@ -121,7 +121,7 @@ class SplitTab(FeatureTab):
         self.progress_dialog.close()
         QMessageBox.information(self, "Success", f"Successfully split PDF to {output_path}")
         self.preview.clear()
-        self.split_file_label.setText("No file selected.")
+        self.file_label.setText("No file selected.")
         self.selected_split_file = None
         self.split_button.setEnabled(True)
 

@@ -157,7 +157,8 @@ class CollapsibleCategory(QWidget):
         self.header_btn = QPushButton()
         self.header_btn.setObjectName("categoryHeader")
         self.header_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.header_btn.setFixedHeight(80)
+        # Keep enough vertical room for both title + description on high-DPI displays.
+        self.header_btn.setFixedHeight(88)
         self.header_btn.clicked.connect(self.toggle_expand)
         
         header_layout = QHBoxLayout(self.header_btn)
@@ -172,9 +173,13 @@ class CollapsibleCategory(QWidget):
         
         # Icon
         icon_label = QLabel(self.category["icon"])
-        icon_label.setFont(QFont("Plus Jakarta Sans", 20))
-        icon_label.setFixedWidth(36)
-        icon_label.setStyleSheet("background: transparent;")
+        icon_label.setFixedWidth(52)
+        icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        icon_label.setStyleSheet(
+            "background: transparent;"
+            "font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji';"
+            "font-size: 26px;"
+        )
         header_layout.addWidget(icon_label)
         
         # Title and description
@@ -221,6 +226,9 @@ class CollapsibleCategory(QWidget):
                 background-color: {COLORS['surface']};
                 border: 1px solid {COLORS['border']};
                 border-radius: 12px;
+                min-height: 88px;
+                max-height: 88px;
+                padding: 0px;
                 text-align: left;
             }}
             QPushButton#categoryHeader:hover {{
@@ -277,6 +285,9 @@ class CollapsibleCategory(QWidget):
                     background-color: {self.category['color']}15;
                     border: 1px solid {self.category['color']}60;
                     border-radius: 12px;
+                    min-height: 88px;
+                    max-height: 88px;
+                    padding: 0px;
                     text-align: left;
                 }}
                 QPushButton#categoryHeader:hover {{
@@ -290,6 +301,9 @@ class CollapsibleCategory(QWidget):
                     background-color: {COLORS['surface']};
                     border: 1px solid {COLORS['border']};
                     border-radius: 12px;
+                    min-height: 88px;
+                    max-height: 88px;
+                    padding: 0px;
                     text-align: left;
                 }}
                 QPushButton#categoryHeader:hover {{
@@ -301,37 +315,62 @@ class CollapsibleCategory(QWidget):
     def create_feature_button(self, item_data):
         """Create a feature button tile"""
         name, tab_class, description = item_data
+        is_pro = bool(
+            tab_class
+            and hasattr(self.main_window, "is_widget_pro")
+            and self.main_window.is_widget_pro(tab_class)
+        )
         
         color = self.category['color']
         
         btn = QPushButton()
         btn.setObjectName("featureTile")
         btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        btn.setFixedHeight(76)
+        btn.setFixedHeight(84)
         btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        btn.setToolTip(description)
+        tooltip = description
+        if is_pro:
+            tooltip = f"{description}\n\nPro feature: Requires activation"
+        btn.setToolTip(tooltip)
         
         # Use a QWidget container inside button for proper label display
         container = QWidget(btn)
         container.setStyleSheet("background: transparent;")
-        container.setGeometry(0, 0, 300, 76)
+        container.setGeometry(0, 0, 300, 84)
         
         btn_layout = QVBoxLayout(container)
         btn_layout.setContentsMargins(16, 14, 16, 14)
         btn_layout.setSpacing(4)
         btn_layout.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+
+        top_row = QHBoxLayout()
+        top_row.setContentsMargins(0, 0, 0, 0)
+        top_row.setSpacing(8)
         
         name_label = QLabel(name, container)
         name_label.setFont(QFont("Plus Jakarta Sans", 13, QFont.Weight.Medium))
         name_label.setStyleSheet(f"color: {COLORS['text']}; background: transparent;")
         name_label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+
+        top_row.addWidget(name_label)
+        top_row.addStretch()
+
+        if is_pro:
+            pro_label = QLabel("PRO", container)
+            pro_label.setFont(QFont("Plus Jakarta Sans", 9, QFont.Weight.Bold))
+            pro_label.setStyleSheet(
+                "color: #0a0f14; background-color: #f59e0b; "
+                "border-radius: 6px; padding: 2px 6px;"
+            )
+            pro_label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+            top_row.addWidget(pro_label)
         
         desc_label = QLabel(description, container)
         desc_label.setFont(QFont("Plus Jakarta Sans", 11))
         desc_label.setStyleSheet(f"color: {COLORS['text_secondary']}; background: transparent;")
         desc_label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
         
-        btn_layout.addWidget(name_label)
+        btn_layout.addLayout(top_row)
         btn_layout.addWidget(desc_label)
         
         btn.setStyleSheet(f"""
@@ -339,6 +378,9 @@ class CollapsibleCategory(QWidget):
                 background-color: {COLORS['surface']};
                 border: 1px solid {COLORS['border']};
                 border-radius: 10px;
+                min-height: 84px;
+                max-height: 84px;
+                padding: 0px;
                 text-align: left;
             }}
             QPushButton#featureTile:hover {{
