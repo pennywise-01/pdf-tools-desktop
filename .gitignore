@@ -14,3 +14,7 @@ __pycache__/
 # Node/service artifacts
 services/licensing-worker/node_modules/
 services/licensing-worker/.wrangler/
+
+
+LibreOfficePortableLibreOfficePortable
+*.exe
