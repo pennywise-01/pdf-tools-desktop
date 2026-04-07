@@ -112,3 +112,35 @@ You can combine both toggles when needed.
 **⚠️ Never distribute executables built with dev mode enabled!**
 
 For more details, see [docs/ANTI_TAMPERING.md](docs/ANTI_TAMPERING.md).
+
+## PDF to PPTX Experimental Engine
+
+The PDF to PPTX tab now includes an optional experimental engine toggle:
+
+- `Use experimental editable engine (pdftoppt)` in the UI.
+- When enabled, conversion tries `pdftoppt` before custom fallback methods.
+- If warning volume exceeds the configured threshold, `pdftoppt` is skipped automatically.
+
+Environment flags:
+
+```bash
+# Enable pdftoppt globally (default is disabled)
+# PowerShell
+$env:PDF_TOOLS_ENABLE_PDFTOPPT="1"
+
+# Optional warning threshold for pdftoppt fallback decisions (default: 200)
+$env:PDF_TOOLS_PDFTOPPT_WARNING_THRESHOLD="200"
+```
+
+## A/B Benchmark Command (Current Pipeline vs pdftoppt)
+
+Use the benchmark script to compare output quality and speed on any customer PDF:
+
+```bash
+python scripts/benchmark_pdf_to_pptx.py --input "C:\path\to\file.pdf"
+```
+
+Optional arguments:
+
+- `--output-dir` to choose where benchmark PPTX files are written.
+- `--pdftoppt-warning-threshold` to enforce warning-based pdftoppt failure during benchmark.

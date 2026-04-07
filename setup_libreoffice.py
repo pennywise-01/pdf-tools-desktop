@@ -13,6 +13,7 @@ def main():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     installer_path = os.path.join(base_dir, INSTALLER_FILENAME)
     install_dir = os.path.join(base_dir, INSTALL_DIR_NAME)
+    malformed_install_dir = os.path.join(base_dir, f"{INSTALL_DIR_NAME}{INSTALL_DIR_NAME}")
 
     print(f"Working directory: {base_dir}")
 
@@ -38,12 +39,18 @@ def main():
         print("Installer already exists.")
 
     # 2. Extract
-    if not os.path.exists(install_dir):
-        print(f"Extracting to {install_dir}...")
+    existing_install_dir = None
+    for candidate in [install_dir, malformed_install_dir]:
+        if os.path.exists(os.path.join(candidate, "App", "libreoffice", "program", "soffice.exe")):
+            existing_install_dir = candidate
+            break
+
+    if existing_install_dir is None:
+        print(f"Extracting to {base_dir}...")
         # Use subprocess to run the .paf.exe
         # Arguments: /DESTINATION=<path> /VERYSILENT /SUPPRESSMSGBOXES
         # Note: /DESTINATION requires absolute path
-        cmd = [installer_path, f"/DESTINATION={install_dir}", "/VERYSILENT", "/SUPPRESSMSGBOXES"]
+        cmd = [installer_path, f"/DESTINATION={base_dir}", "/VERYSILENT", "/SUPPRESSMSGBOXES"]
         try:
             print(f"Running command: {' '.join(cmd)}")
             subprocess.check_call(cmd)
@@ -52,13 +59,19 @@ def main():
             print(f"Extraction failed: {e}")
             print("Please ensure you are running this on Windows and have permission to execute the installer.")
             sys.exit(1)
+
+        for candidate in [install_dir, malformed_install_dir]:
+            if os.path.exists(os.path.join(candidate, "App", "libreoffice", "program", "soffice.exe")):
+                existing_install_dir = candidate
+                break
     else:
-        print(f"Directory {install_dir} already exists. Skipping extraction.")
+        print(f"Directory {existing_install_dir} already exists. Skipping extraction.")
 
     # 3. Optimize
     print("Running Lite Optimization...")
     # Standard PortableApps structure: App/libreoffice/
-    app_dir = os.path.join(install_dir, "App", "libreoffice")
+    install_root = existing_install_dir if existing_install_dir else install_dir
+    app_dir = os.path.join(install_root, "App", "libreoffice")
     
     if not os.path.exists(app_dir):
         print(f"Warning: {app_dir} not found. Structure might be different or extraction failed.")

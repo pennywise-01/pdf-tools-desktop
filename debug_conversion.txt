@@ -40,3 +40,899 @@ Source has extractable text: False
 Attempting LibreOffice conversion...
 LibreOffice path found: C:\LibreOfficePortable\App\libreoffice\program\soffice.exe
 LibreOffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-0\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-0\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-0\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-1\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-1\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-1\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-2\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-2\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-2\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-3\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-3\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-3\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-4\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-4\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-4\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\ishig\\AppData\\Local\\Temp\\tmpk6iuttih\\updates\\0\\update.log'
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-5\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-5\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-5\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-5\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-6\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-6\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-6\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-6\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\ishig\\AppData\\Local\\Temp\\tmpq4s4vv7b\\updates\\0\\update.log'
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-7\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-7\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-7\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-7\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-8\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-8\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-8\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-8\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-9\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-9\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-9\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-9\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-9\test_convert_pdf_to_pptx_prior0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images (formatting preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-10\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-10\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-10\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-10\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-10\test_convert_pdf_to_pptx_prior0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+LibreOffice attempt 1/3 command: c:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --infilter=impress_pdf_import --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_f8xhp2on --outdir C:\Users\ishig\AppData\Local\Temp\tmph8t98p1h C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 1 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice attempt 2/3 command: c:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_f8xhp2on --outdir C:\Users\ishig\AppData\Local\Temp\tmph8t98p1h C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 2 produced no discoverable PPTX output. stdout=convert C:\Users\ishig\OneDrive - UNITAR CAPITAL SDN. BHD\Cyber Ethic revision\test.pdf as a Draw document -> C:\Users\ishig\AppData\Local\Temp\tmph8t98p1h\test.pptx using filter : "Impress MS PowerPoint 2007 XML" stderr=Entity: line 1: parser error : Document is empty
+
+^
+Error: Please verify input parameters... (SfxBaseModel::impl_store <file:///C:/Users/ishig/AppData/Local/Temp/tmph8t98p1h/test.pptx> failed: 0x81a(Error Area:Io Class:Parameter Code:26))
+LibreOffice attempt 3/3 command: c:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_f8xhp2on --outdir C:\Users\ishig\AppData\Local\Temp\tmph8t98p1h C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 3 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice final error: LibreOffice did not produce an output PPTX file.
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images (formatting preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+LibreOffice attempt 1/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --infilter=impress_pdf_import --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_zi3di4na --outdir C:\Users\ishig\AppData\Local\Temp\tmp2im0tqwk C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 1 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice attempt 2/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_zi3di4na --outdir C:\Users\ishig\AppData\Local\Temp\tmp2im0tqwk C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 2 produced no discoverable PPTX output. stdout=convert C:\Users\ishig\OneDrive - UNITAR CAPITAL SDN. BHD\Cyber Ethic revision\test.pdf as a Draw document -> C:\Users\ishig\AppData\Local\Temp\tmp2im0tqwk\test.pptx using filter : "Impress MS PowerPoint 2007 XML" stderr=Entity: line 1: parser error : Document is empty
+
+^
+Error: Please verify input parameters... (SfxBaseModel::impl_store <file:///C:/Users/ishig/AppData/Local/Temp/tmp2im0tqwk/test.pptx> failed: 0x81a(Error Area:Io Class:Parameter Code:26))
+LibreOffice attempt 3/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_zi3di4na --outdir C:\Users\ishig\AppData\Local\Temp\tmp2im0tqwk C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 3 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice final error: LibreOffice did not produce an output PPTX file.
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images (formatting preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Attempting libreoffice conversion...
+LibreOffice attempt 1/3 command: c:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --infilter=impress_pdf_import --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_ul1v0eyq --outdir C:\Users\ishig\AppData\Local\Temp\tmpl519z9ih C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 1 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice attempt 2/3 command: c:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_ul1v0eyq --outdir C:\Users\ishig\AppData\Local\Temp\tmpl519z9ih C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 2 produced no discoverable PPTX output. stdout=convert C:\Users\ishig\OneDrive - UNITAR CAPITAL SDN. BHD\Cyber Ethic revision\test.pdf as a Draw document -> C:\Users\ishig\AppData\Local\Temp\tmpl519z9ih\test.pptx using filter : "Impress MS PowerPoint 2007 XML" stderr=Entity: line 1: parser error : Document is empty
+
+^
+Error: Please verify input parameters... (SfxBaseModel::impl_store <file:///C:/Users/ishig/AppData/Local/Temp/tmpl519z9ih/test.pptx> failed: 0x81a(Error Area:Io Class:Parameter Code:26))
+LibreOffice attempt 3/3 command: c:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_ul1v0eyq --outdir C:\Users\ishig\AppData\Local\Temp\tmpl519z9ih C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 3 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice final error: LibreOffice did not produce an output PPTX file.
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images (formatting preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-11\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-11\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-11\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-11\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-11\test_convert_pdf_to_pptx_prior0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-11\test_convert_pdf_to_pptx_uses_1\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 77
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting pdftoppt conversion...
+pdftoppt result: True, Converted with pdftoppt experimental engine (warnings=0, line_warnings=0)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-11\test_convert_pdf_to_pptx_falls0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 200
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting pdftoppt conversion...
+pdftoppt result: False, pdftoppt warning threshold exceeded (350>200; line warnings=300).
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+LibreOffice attempt 1/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --infilter=impress_pdf_import --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_xjsrftnb --outdir C:\Users\ishig\AppData\Local\Temp\tmpk6_wu7q3 C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 1 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice attempt 2/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_xjsrftnb --outdir C:\Users\ishig\AppData\Local\Temp\tmpk6_wu7q3 C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 2 produced no discoverable PPTX output. stdout=convert C:\Users\ishig\OneDrive - UNITAR CAPITAL SDN. BHD\Cyber Ethic revision\test.pdf as a Draw document -> C:\Users\ishig\AppData\Local\Temp\tmpk6_wu7q3\test.pptx using filter : "Impress MS PowerPoint 2007 XML" stderr=Entity: line 1: parser error : Document is empty
+
+^
+Error: Please verify input parameters... (SfxBaseModel::impl_store <file:///C:/Users/ishig/AppData/Local/Temp/tmpk6_wu7q3/test.pptx> failed: 0x81a(Error Area:Io Class:Parameter Code:26))
+LibreOffice attempt 3/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_xjsrftnb --outdir C:\Users\ishig\AppData\Local\Temp\tmpk6_wu7q3 C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 3 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice final error: LibreOffice did not produce an output PPTX file.
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images (formatting preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-12\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-12\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-12\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-12\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-12\test_convert_pdf_to_pptx_prior0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-12\test_convert_pdf_to_pptx_uses_1\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 77
+Attempting pdftoppt conversion...
+pdftoppt result: True, Converted with pdftoppt experimental engine (warnings=0, line_warnings=0)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-12\test_convert_pdf_to_pptx_falls0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 200
+Attempting pdftoppt conversion...
+pdftoppt result: False, pdftoppt warning threshold exceeded (350>200; line warnings=300).
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+LibreOffice attempt 1/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --infilter=impress_pdf_import --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_c7qlr6sn --outdir C:\Users\ishig\AppData\Local\Temp\tmpwj_thvlm C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 1 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice attempt 2/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_c7qlr6sn --outdir C:\Users\ishig\AppData\Local\Temp\tmpwj_thvlm C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 2 produced no discoverable PPTX output. stdout=convert C:\Users\ishig\OneDrive - UNITAR CAPITAL SDN. BHD\Cyber Ethic revision\test.pdf as a Draw document -> C:\Users\ishig\AppData\Local\Temp\tmpwj_thvlm\test.pptx using filter : "Impress MS PowerPoint 2007 XML" stderr=Entity: line 1: parser error : Document is empty
+
+^
+Error: Please verify input parameters... (SfxBaseModel::impl_store <file:///C:/Users/ishig/AppData/Local/Temp/tmpwj_thvlm/test.pptx> failed: 0x81a(Error Area:Io Class:Parameter Code:26))
+LibreOffice attempt 3/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_c7qlr6sn --outdir C:\Users\ishig\AppData\Local\Temp\tmpwj_thvlm C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 3 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice final error: LibreOffice did not produce an output PPTX file.
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images (formatting preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-13\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-13\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-13\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-13\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-13\test_convert_pdf_to_pptx_prior0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-13\test_convert_pdf_to_pptx_uses_1\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 77
+Attempting pdftoppt conversion...
+pdftoppt result: True, Converted with pdftoppt experimental engine (warnings=0, line_warnings=0)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-13\test_convert_pdf_to_pptx_falls0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 200
+Attempting pdftoppt conversion...
+pdftoppt result: False, pdftoppt warning threshold exceeded (350>200; line warnings=300).
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-14\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-14\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-14\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-14\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-14\test_convert_pdf_to_pptx_prior0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-14\test_convert_pdf_to_pptx_uses_1\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 77
+Attempting pdftoppt conversion...
+pdftoppt result: True, Converted with pdftoppt experimental engine (warnings=0, line_warnings=0)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-14\test_convert_pdf_to_pptx_falls0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 200
+Attempting pdftoppt conversion...
+pdftoppt result: False, pdftoppt warning threshold exceeded (350>200; line warnings=300).
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 200
+Attempting pdftoppt conversion...
+pdftoppt result: False, pdftoppt warning threshold exceeded (2770>200; line warnings=2770).
+Attempting libreoffice conversion...
+LibreOffice attempt 1/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --infilter=impress_pdf_import --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_ji16g7my --outdir C:\Users\ishig\AppData\Local\Temp\tmpq3b6vy1x C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+LibreOffice attempt 1 produced no discoverable PPTX output. stdout= stderr=
+LibreOffice attempt 2/3 command: C:\Users\ishig\personal-projects\pdf-tools-desktop\LibreOfficePortableLibreOfficePortable\App\libreoffice\program\soffice.exe --headless --nologo --nodefault --norestore --convert-to pptx:"Impress MS PowerPoint 2007 XML" -env:UserInstallation=file:///C:/Users/ishig/AppData/Local/Temp/pdf_tools_lo_profile_ji16g7my --outdir C:\Users\ishig\AppData\Local\Temp\tmpq3b6vy1x C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-15\test_convert_pdf_to_pptx_uses_0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 77
+Attempting pdftoppt conversion...
+pdftoppt result: True, Converted with pdftoppt experimental engine (warnings=0, line_warnings=0)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-15\test_convert_pdf_to_pptx_falls0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 200
+Attempting pdftoppt conversion...
+pdftoppt result: False, pdftoppt warning threshold exceeded (350>200; line warnings=300).
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-16\test_convert_pdf_to_pptx_retri0\input.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, Converted with LibreOffice. Output validation failed: corrupt package
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-16\test_convert_pdf_to_pptx_uses_0\scanned.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+OCR pre-pass completed to improve editable text extraction.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-16\test_convert_pdf_to_pptx_scann0\scanned-no-ocr.pdf ---
+Source has extractable text: False
+Source has visible content: True
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: False, Custom engine failed
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-16\test_convert_pdf_to_pptx_does_0\blank.pdf ---
+Source has extractable text: False
+Source has visible content: False
+Source appears scanned/image-only. Attempting OCR pre-pass...
+Tesseract OCR is not available; continuing without OCR pre-pass.
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: True, Converted with LibreOffice
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-16\test_convert_pdf_to_pptx_prior0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: False
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice conversion failed: LibreOffice did not produce an output PPTX file.
+Attempting image conversion...
+image result: True, Converted using high-quality images
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-16\test_convert_pdf_to_pptx_uses_1\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 77
+Attempting pdftoppt conversion...
+pdftoppt result: True, Converted with pdftoppt experimental engine (warnings=0, line_warnings=0)
+
+--- Starting conversion for C:\Users\ishig\AppData\Local\Temp\pytest-of-ishig\pytest-16\test_convert_pdf_to_pptx_falls0\problematic.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 200
+Attempting pdftoppt conversion...
+pdftoppt result: False, pdftoppt warning threshold exceeded (350>200; line warnings=300).
+Attempting libreoffice conversion...
+libreoffice result: False, LibreOffice not found
+Attempting custom_engine conversion...
+custom_engine result: True, Converted with Enhanced Engine (Format Preserved)
+
+--- Starting conversion for C:/Users/ishig/OneDrive - UNITAR CAPITAL SDN. BHD/Cyber Ethic revision/test.pdf ---
+Source has extractable text: True
+Source has visible content: True
+Experimental pdftoppt enabled: True
+pdftoppt warning threshold: 200
+Attempting pdftoppt conversion...
+pdftoppt result: True, Converted with pdftoppt experimental engine (warnings=2770, actionable_warnings=0, line_warnings=2770, effective_warning_score=0.00, line_warning_weight=0)
